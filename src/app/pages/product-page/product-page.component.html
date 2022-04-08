@@ -1,30 +1,53 @@
 <div class="product">
-    <mat-tab-group>
-        <mat-tab label="Информация о товаре">
-            <mat-form-field class="example-full-width" appearance="outline">
-                <mat-label>Информация о товаре</mat-label>
-                <textarea matInput placeholder="Сноубордические штаны..." class="product__input"></textarea>
-            </mat-form-field>
-        </mat-tab>
-        <mat-tab label="Загрузка фотографий">
-            <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="dragDrop($event)">
-                <div class="custom-dropzone" ngx-dropzone [accept]="'image/jpeg'" [expandable]="true" [disableClick]="true" [maxFileSize]="1000000" (change)="onSelect($event)" #drop>
-
-                    <ngx-dropzone-label *ngFor="let num of numSquare">
-                        <div class="square">{{ num }}</div>
-                    </ngx-dropzone-label>
-
-                    <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let file of files" [file]="file" [removable]="true" (removed)="onRemove(file)" cdkDrag>
-                        <!-- <ngx-dropzone-label>{{ file.name }} ({{ file.type }})</ngx-dropzone-label> -->
-                    </ngx-dropzone-image-preview>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+        <mat-tab-group>
+            <mat-tab label="Информация о товаре">
+                <div class="product__info">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Name</mat-label>
+                        <input matInput placeholder="Сноубордические штаны" formControlName="name">
+                    </mat-form-field>
+    
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Brand</mat-label>
+                        <input matInput placeholder="DC shoes" formControlName="brand">
+                    </mat-form-field>
+    
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Price</mat-label>
+                        <input matInput placeholder="8500" formControlName="price" mask="000000">
+                    </mat-form-field>
+    
+                    <section class="example-section">
+                        <mat-checkbox class="example-margin" formControlName="isActive" color="warn">Активность</mat-checkbox>
+                    </section>
                 </div>
-            </div>
+            </mat-tab>
+            <mat-tab label="Загрузка фотографий">
+                <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="dragDrop($event)">
+                    <div class="custom-dropzone" ngx-dropzone [accept]="'image/jpeg'" [expandable]="true" [disableClick]="true" [maxFileSize]="1000000" (change)="onSelect($event)" #drop>
+    
+                        <ngx-dropzone-label *ngFor="let num of numSquare">
+                            <div class="square">{{ num }}</div>
+                        </ngx-dropzone-label>
+    
+                        <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let file of files" [file]="file" [removable]="true" (removed)="onRemove(file)" cdkDrag>
+                            <!-- <ngx-dropzone-label>{{ file.name }} ({{ file.type }})</ngx-dropzone-label> -->
+                        </ngx-dropzone-image-preview>
+                    </div>
+                </div>
 
-            <button mat-raised-button color="primary" (click)="drop.showFileSelector()" class="btn">
-                <mat-icon>file_upload</mat-icon>
-                Добавить файлы
-            </button>
-        </mat-tab>
-        <mat-tab label="Загрузка документов"> Content 3 </mat-tab>
-    </mat-tab-group>
+                <app-product-image></app-product-image>
+    
+                <button mat-raised-button color="accent" (click)="drop.showFileSelector()" class="product__btn__add">
+                    <mat-icon>file_upload</mat-icon>
+                    Добавить файлы
+                </button>
+            </mat-tab>
+            <mat-tab label="Загрузка документов"> Content 3 </mat-tab>
+        </mat-tab-group>
+        <div class="product__btn">
+            <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Добавить товар</button>
+        </div>
+    </form>
 </div>

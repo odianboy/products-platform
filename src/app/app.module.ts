@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from "@angular/forms";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,6 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppComponent } from './app.component';
@@ -22,12 +23,19 @@ import { ProductPageComponent } from './pages/product-page/product-page.componen
 
 import { NgxDropzoneModule } from 'ngx-dropzone';
 
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { ProductImageComponent } from './pages/product-image/product-image.component';
+
+const maskConfig: Partial<IConfig> = {
+  validation: false,
+};
 
 @NgModule({
   declarations: [	
     AppComponent,
     NavigationComponent,
     ProductPageComponent,
+    ProductImageComponent,
    ],
   imports: [
     BrowserModule,
@@ -43,8 +51,10 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     MatTabsModule,
     MatInputModule,
     MatButtonModule,
+    MatCheckboxModule,
     NgxDropzoneModule,
-    DragDropModule
+    DragDropModule,
+    NgxMaskModule.forRoot(maskConfig),
   ],
   providers: [],
   bootstrap: [AppComponent]

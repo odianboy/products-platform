@@ -1,0 +1,12 @@
+<div class="image">
+    <div class="custom-dropzone" ngx-dropzone [accept]="'image/jpeg'" [expandable]="true" [disableClick]="true" [maxFileSize]="1000000" (change)="onSelect($event)">
+    
+        <ngx-dropzone-label>
+            <div class="square"></div>
+        </ngx-dropzone-label>
+
+        <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let file of files" [file]="file" [removable]="true" (removed)="onRemove(file)">
+            
+        </ngx-dropzone-image-preview>
+    </div>
+</div>
