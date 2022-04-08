@@ -1,0 +1,34 @@
+ngx-dropzone,
+.custom-dropzone {
+  margin: 10px;
+}
+
+.custom-dropzone {
+	height: 250px;
+    max-width: 550px;
+	background: #fff;
+    border: none;
+    box-shadow: 4px 4px 14px rgb(0, 0, 0, 0.25);
+	border-radius: 5px;
+	font-size: 20px;
+    justify-content: center;
+}
+
+.custom-dropzone.ngx-dz-hovered {
+  border: 2px solid #000;
+}
+
+.btn {
+    margin: 10px;
+}
+
+.square {
+    width: 100px;
+    height: 100px;
+    margin: 2px;
+    border: dotted rgb(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}

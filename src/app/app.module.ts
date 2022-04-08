@@ -13,10 +13,14 @@ import { PortalModule } from '@angular/cdk/portal';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './pages/navigation/navigation.component';
 import { ProductPageComponent } from './pages/product-page/product-page.component';
+
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 
 @NgModule({
@@ -37,7 +41,10 @@ import { ProductPageComponent } from './pages/product-page/product-page.componen
     MatTooltipModule,
     PortalModule,
     MatTabsModule,
-    MatInputModule
+    MatInputModule,
+    MatButtonModule,
+    NgxDropzoneModule,
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]
