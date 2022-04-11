@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Product } from 'src/app/core/interfaces/product.interface';
+import { images } from 'src/app/core/const/image-data.const';
+import { Observable } from 'rxjs';
+import { ImageService } from 'src/app/core/services/image.service';
 
 @Component({
   selector: 'app-product-page',
@@ -10,13 +13,15 @@ import { Product } from 'src/app/core/interfaces/product.interface';
 })
 export class ProductPageComponent {
 
-  numSquare = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  files: File[];
+  images$: Observable<any[]>
   form: FormGroup;
 
-  constructor() {
-    this.files = [];
+  constructor(private imageService: ImageService) {
+    this.images$ = this.imageService.images$;
     this.form = this.formGroupInit();
+
+    // console.log(this.images$);
+    
   }
 
   formGroupInit(): FormGroup {
@@ -38,16 +43,25 @@ export class ProductPageComponent {
     console.log(productData);
   }
 
-	onSelect(event: any) {
-    this.files.push(...event.addedFiles);
-	}
+  addImageProduct(image: File): void{
 
-	onRemove(event: any) {
-		this.files.splice(this.files.indexOf(event), 1);
-	}
+    // console.log(image);
 
-  dragDrop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.files, event.previousIndex, event.currentIndex);
+    console.log(this.images$);
+
+    // this.imageService.addImage(image);
   }
+
+	// onSelect(event: any) {
+  //   this.files.push(...event.addedFiles);
+	// }
+
+	// onRemove(event: any) {
+	// 	this.files.splice(this.files.indexOf(event), 1);
+	// }
+
+  // dragDrop(event: CdkDragDrop<string[]>) {
+  //   moveItemInArray(this.files, event.previousIndex, event.currentIndex);
+  // }
 
 }

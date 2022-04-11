@@ -18,17 +18,6 @@ ngx-dropzone,
   border: 2px solid #000;
 }
 
-.square {
-    width: 100px;
-    height: 100px;
-    margin: 2px;
-    border: dotted rgb(0, 0, 0, 0.25);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-}
-
 .mat-tab-group {
     margin-bottom: 48px;
 }
@@ -42,7 +31,18 @@ ngx-dropzone,
 
     &__info {
         height: 100%;
-        overflow:  hidden;
+        overflow: hidden;
+    }
+
+    &__image {
+        margin: 10px;
+        background-color: #fff;
+        box-shadow: 4px 4px 14px rgb(0, 0, 0, 0.25);
+	    border-radius: 15px;
+        padding: 10px;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        max-width: 650px;
     }
 
     &__btn {
@@ -53,4 +53,15 @@ ngx-dropzone,
             margin: 10px;
         }
     }
+}
+
+.square {
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background-size: cover;
 }

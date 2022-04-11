@@ -26,6 +26,8 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { ProductImageComponent } from './pages/product-image/product-image.component';
 
+
+import { CoreModule } from './core/core.module'
 const maskConfig: Partial<IConfig> = {
   validation: false,
 };
@@ -55,6 +57,7 @@ const maskConfig: Partial<IConfig> = {
     NgxDropzoneModule,
     DragDropModule,
     NgxMaskModule.forRoot(maskConfig),
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]

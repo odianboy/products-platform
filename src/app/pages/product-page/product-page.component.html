@@ -24,7 +24,7 @@
                 </div>
             </mat-tab>
             <mat-tab label="Загрузка фотографий">
-                <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="dragDrop($event)">
+                <!-- <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="dragDrop($event)">
                     <div class="custom-dropzone" ngx-dropzone [accept]="'image/jpeg'" [expandable]="true" [disableClick]="true" [maxFileSize]="1000000" (change)="onSelect($event)" #drop>
     
                         <ngx-dropzone-label *ngFor="let num of numSquare">
@@ -32,17 +32,31 @@
                         </ngx-dropzone-label>
     
                         <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let file of files" [file]="file" [removable]="true" (removed)="onRemove(file)" cdkDrag>
-                            <!-- <ngx-dropzone-label>{{ file.name }} ({{ file.type }})</ngx-dropzone-label> -->
+                           
                         </ngx-dropzone-image-preview>
                     </div>
-                </div>
+                </div> -->
 
-                <app-product-image></app-product-image>
-    
-                <button mat-raised-button color="accent" (click)="drop.showFileSelector()" class="product__btn__add">
+                <div class="cover">
+                    <div class="product__image">
+                        <app-product-image
+                        *ngFor="let image of images$ | async; index as idx;"
+                        [numImage]="idx"
+                        (onAdd)="addImageProduct($event)"
+                        ></app-product-image>
+                    </div>
+
+                    <button mat-raised-button color="accent" class="product__btn__add">
+                        <mat-icon>file_upload</mat-icon>
+                        Добавить файлы
+                    </button>
+                </div>
+                
+
+                <!-- <button mat-raised-button color="accent" (click)="drop.showFileSelector()" class="product__btn__add">
                     <mat-icon>file_upload</mat-icon>
                     Добавить файлы
-                </button>
+                </button> -->
             </mat-tab>
             <mat-tab label="Загрузка документов"> Content 3 </mat-tab>
         </mat-tab-group>

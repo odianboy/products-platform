@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ImageService } from 'src/app/core/services/image.service';
 
 @Component({
   selector: 'app-product-image',
@@ -7,23 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductImageComponent {
 
-  files: File[];
+  @Input() image!: File;
+  @Input() numImage!: number;
 
-  constructor() {
-    this.files = [];
+  @Output() onAdd = new EventEmitter<File>();
+
+  constructor() {}
+
+  addImage(image: File): void{
+
+    this.onAdd.emit(image);
   }
-
-  onSelect(event: any) {
-    if(this.files.length >= 1) {
-      this.files.splice(0,1)
-      this.files.push(...event.addedFiles);
-    } else {
-      this.files.push(...event.addedFiles);
-    }
-	}
-
-	onRemove(event: any) {
-		this.files.splice(this.files.indexOf(event), 1);
-	}
-
 }
