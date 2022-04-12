@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Product } from 'src/app/core/interfaces/product.interface';
-import { images } from 'src/app/core/const/image-data.const';
+
 import { Observable } from 'rxjs';
+
 import { ImageService } from 'src/app/core/services/image.service';
+
+import { Product } from 'src/app/core/interfaces/product.interface';
+import { Image } from 'src/app/core/interfaces/image.interface';
 
 @Component({
   selector: 'app-product-page',
@@ -13,15 +16,13 @@ import { ImageService } from 'src/app/core/services/image.service';
 })
 export class ProductPageComponent {
 
-  images$: Observable<any[]>
+  images$: Observable<Image[]>
   form: FormGroup;
 
   constructor(private imageService: ImageService) {
     this.images$ = this.imageService.images$;
     this.form = this.formGroupInit();
 
-    // console.log(this.images$);
-    
   }
 
   formGroupInit(): FormGroup {
@@ -44,14 +45,7 @@ export class ProductPageComponent {
   }
 
   addImageProduct(image: any): void{
-
-    // console.log(image);
-
-    // console.log(this.images$);
-
     this.imageService.addImage(image);
-
-    // console.log(this.images$);
   }
 
 	// onSelect(event: any) {
