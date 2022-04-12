@@ -8,3 +8,12 @@
     border-radius: 10px;
     background-size: cover;
 }
+
+.coverImage {
+    font-size: 0;
+    border: 'transparent';
+}
+
+.noCover {
+    border: dotted rgb(0, 0, 0, 0.25);
+}

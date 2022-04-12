@@ -43,13 +43,15 @@ export class ProductPageComponent {
     console.log(productData);
   }
 
-  addImageProduct(image: File): void{
+  addImageProduct(image: any): void{
 
     // console.log(image);
 
-    console.log(this.images$);
+    // console.log(this.images$);
 
-    // this.imageService.addImage(image);
+    this.imageService.addImage(image);
+
+    // console.log(this.images$);
   }
 
 	// onSelect(event: any) {

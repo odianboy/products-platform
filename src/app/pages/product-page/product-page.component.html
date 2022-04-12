@@ -42,6 +42,7 @@
                         <app-product-image
                         *ngFor="let image of images$ | async; index as idx;"
                         [numImage]="idx"
+                        [image]="image"
                         (onAdd)="addImageProduct($event)"
                         ></app-product-image>
                     </div>
