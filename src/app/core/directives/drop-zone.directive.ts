@@ -1,5 +1,6 @@
 import { Directive, Output, EventEmitter, HostListener } from '@angular/core';
 import { Image } from '../interfaces/image.interface';
+import { ImageService } from '../services/image.service';
 
 @Directive({
   selector: '[appDropZone]'
@@ -8,7 +9,7 @@ export class DropZoneDirective {
 
   @Output() onFileDropped = new EventEmitter<Image>();
 
-  imageProduct!: Image;
+  constructor(private imageService: ImageService) { }
 
   @HostListener('dragover', ['$event']) onDragOver(event: DragEvent) {
     event.preventDefault();
@@ -24,21 +25,9 @@ export class DropZoneDirective {
     event.preventDefault();
     event.stopPropagation();
 
-    let images = event.dataTransfer!.files;
+    let file = event.dataTransfer!.files[0];
+    let image = this.imageService.creationImage(file);
 
-    if (images.length > 0) {
-      let image = images[0];
-
-      this.imageProduct = {
-        name: image.name,
-        url: `url('${ URL.createObjectURL(image) }')`,
-        size: image.size,
-        type: image.type
-      }
-
-      this.onFileDropped.emit(this.imageProduct);
-    }
+    this.onFileDropped.emit(image);
   }
-
-  constructor() { }
 }

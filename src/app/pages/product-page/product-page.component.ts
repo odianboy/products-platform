@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
@@ -22,7 +22,6 @@ export class ProductPageComponent {
   constructor(private imageService: ImageService) {
     this.images$ = this.imageService.images$;
     this.form = this.formGroupInit();
-
   }
 
   formGroupInit(): FormGroup {
@@ -48,6 +47,13 @@ export class ProductPageComponent {
     this.imageService.addImage(image);
   }
 
+  addFile(event: any) {
+    let file = event.target.files[0];
+    let image = this.imageService.creationImage(file);
+
+    this.addImageProduct(image)
+  }
+
 	// onSelect(event: any) {
   //   this.files.push(...event.addedFiles);
 	// }
@@ -56,8 +62,11 @@ export class ProductPageComponent {
 	// 	this.files.splice(this.files.indexOf(event), 1);
 	// }
 
-  // dragDrop(event: CdkDragDrop<string[]>) {
-  //   moveItemInArray(this.files, event.previousIndex, event.currentIndex);
-  // }
+  drop(event: CdkDragDrop<Image[]>) {
+    // moveItemInArray(this.images$, event.previousIndex, event.currentIndex);
+    // console.log(event);
+    
+    this.imageService.changeOfPosition(event)
+  }
 
 }
