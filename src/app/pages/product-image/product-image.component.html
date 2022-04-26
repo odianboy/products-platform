@@ -1,9 +1,16 @@
 <div class="image">
     <div
-        class="square"
-        appDropZone (onFileDropped)="addImage($event)"
-        [ngStyle]="{ 'background-image': image.type ? image.url: 'none' }"
-        [ngClass]="{ coverImage: image.type, noCover: !image.type }"
+        class="image-card"
+        appDropZone
+        (onFileDropped)="addImage($event)"
+        [ngStyle]="{
+            'background-image': image.type ?
+                image.url: 'none'
+        }"
+        [ngClass]="{
+            coverImage: image.type,
+            noCover: !image.type
+        }"
     >
        {{ numImage + 1 }}
     </div>

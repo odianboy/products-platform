@@ -5,50 +5,100 @@
                 <div class="product__info">
                     <mat-form-field class="example-full-width" appearance="outline">
                         <mat-label>Name</mat-label>
-                        <input matInput placeholder="Сноубордические штаны" formControlName="name">
+                        <input
+                            matInput
+                            placeholder="Сноубордические штаны"
+                            formControlName="name">
                     </mat-form-field>
     
                     <mat-form-field class="example-full-width" appearance="outline">
                         <mat-label>Brand</mat-label>
-                        <input matInput placeholder="DC shoes" formControlName="brand">
+                        <input
+                            matInput
+                            placeholder="DC shoes"
+                            formControlName="brand">
                     </mat-form-field>
     
                     <mat-form-field class="example-full-width" appearance="outline">
                         <mat-label>Price</mat-label>
-                        <input matInput placeholder="8500" formControlName="price" mask="000000">
+                        <input
+                            matInput
+                            placeholder="8500"
+                            formControlName="price"
+                            mask="000000">
                     </mat-form-field>
     
                     <section class="example-section">
-                        <mat-checkbox class="example-margin" formControlName="isActive" color="warn">Активность</mat-checkbox>
+                        <mat-checkbox
+                            class="example-margin"
+                            formControlName="isActive"
+                            color="warn"
+                        >
+                            Активность
+                        </mat-checkbox>
                     </section>
                 </div>
             </mat-tab>
             <mat-tab label="Загрузка фотографий">
 
-                <div class="cover" *ngIf="images$ | async as images">
-                    <div class="product__image" cdkDropList [cdkDropListData]="images" (cdkDropListDropped)="drop($event)">
+                <div *ngIf="images$ | async as images">
+                    <div class="product__image">
                         <app-product-image
                         *ngFor="let image of images; index as idx;"
-                        
                         [numImage]="idx"
                         [image]="image"
                         (onAdd)="addImageProduct($event)"
-                        cdkDrag
                         ></app-product-image>
                     </div>
 
-                    <button mat-raised-button color="accent" class="product__btn__add">
+                    <button mat-raised-button color="accent" class="product__button_add">
                         <mat-icon>file_upload</mat-icon>
                         Добавить файлы
-                        <input class="product__input" type="file" (change)="addFile($event)">
+                        <input
+                            class="product__input"
+                            type="file"
+                            (change)="addFile($event)">
                     </button>
                 </div>
 
             </mat-tab>
-            <mat-tab label="Загрузка документов"> Content 3 </mat-tab>
+            <mat-tab label="Загрузка документов">
+                <div class="file">
+                    <input
+                        type="file"
+                        class="file__input"
+                        (change)="onFileSelected($event)"
+                        #fileUpload>
+
+                    <div class="file-upload">
+
+                        {{fileName || "Загрузите пожалуйста файл"}}
+
+                        <button
+                            mat-mini-fab
+                            color="primary"
+                            class="upload-btn"
+                            (click)="fileUpload.click()"
+                        >
+                            <mat-icon>attach_file</mat-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="progress">
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>  
+                </div>
+            </mat-tab>
         </mat-tab-group>
-        <div class="product__btn">
-            <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Добавить товар</button>
+        <div class="product__button">
+            <button
+                mat-raised-button
+                color="primary"
+                type="submit"
+                [disabled]="form.invalid"
+            >
+                Добавить товар
+            </button>
         </div>
     </form>
 </div>

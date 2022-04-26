@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './pages/navigation/navigation.component';
@@ -57,7 +58,8 @@ const maskConfig: Partial<IConfig> = {
     NgxDropzoneModule,
     DragDropModule,
     NgxMaskModule.forRoot(maskConfig),
-    CoreModule
+    CoreModule,
+    MatProgressBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

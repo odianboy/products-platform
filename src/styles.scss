@@ -4,43 +4,9 @@ html,
 body {
     height: 100%;
 
-    background: #E0EAFC;
-    background: -webkit-linear-gradient(to right, #CFDEF3, #E0EAFC);
-    background: linear-gradient(to right, #CFDEF3, #E0EAFC);
+    background: #FFFFFF;
 }
 
 body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-
-.header__logo {
-    max-width: 100px;
-    margin-top: 15px;
-    cursor: pointer;
-}
-
-.menu {
-    position: absolute;
-    top: 50%;
-    max-width: auto;
-    background-color: azure;
-    border-radius: 5px;
-    box-shadow: 4px 4px 14px rgb(0, 0, 0, 0.25);
-    cursor: pointer;
-}
-
-.product {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.example-full-width {
-    margin-top: 10px;
-    width: 100%;
-}
-
-.product__input {
-    height: 200px;
-}

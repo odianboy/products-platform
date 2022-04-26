@@ -13,10 +13,10 @@ export class ImageService {
     images$: Observable<Image[]>;
     private _images$: BehaviorSubject<any[]>;
 
-constructor() {
-    this._images$ = new BehaviorSubject(images);
-    this.images$ = this._images$.asObservable();
-}
+    constructor() {
+        this._images$ = new BehaviorSubject(images);
+        this.images$ = this._images$.asObservable();
+    }
 
 addImage(image: Image): void {
     const images = this._images$.getValue();
@@ -36,18 +36,18 @@ creationImage(file: File): Image {
         size: file.size,
         type: file.type
     }
-    return image
+    return image;
 }
 
-changeOfPosition(event: CdkDragDrop<Image[]>) {
-    const images = this._images$.getValue();
+// changeOfPosition(event: CdkDragDrop<Image[]>) {
+//     const images = this._images$.getValue();
 
-    console.log(images);
-    console.log('было', event.previousIndex,'стало', event.currentIndex);
+//     console.log(images);
+//     console.log('было', event.previousIndex,'стало', event.currentIndex);
     
 
-    moveItemInArray(images, event.previousIndex, event.currentIndex);
-    console.log(images);
+//     moveItemInArray(images, event.previousIndex, event.currentIndex);
+//     console.log(images);
 
     // transferArrayItem(
     //     event.previousContainer.data,
@@ -68,5 +68,5 @@ changeOfPosition(event: CdkDragDrop<Image[]>) {
     // images.splice(event.currentIndex, 0, element);
 
     // this._images$.next(images);
-  };
+//   };
 }
