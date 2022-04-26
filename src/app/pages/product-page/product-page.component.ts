@@ -52,9 +52,9 @@ export class ProductPageComponent {
 
         this.fileName = file.name;
         const formData = new FormData();
-        formData.append("test", file);
-
-        console.log(formData);
+        formData.set("test", file);
+ 
+        console.log(file);
       
     }
   }
