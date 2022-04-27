@@ -19,6 +19,7 @@ export class ProductPageComponent {
   form: FormGroup;
 
   fileName = '';
+  fileSize = '';
 
   constructor(private imageService: ImageService, private http: HttpClient) {
     this.images$ = this.imageService.images$;
@@ -56,14 +57,15 @@ export class ProductPageComponent {
 
   addDocument(event: any) {
     const file: File = event.target.files[0];
-    this.fileName = file.name;
-
+    
     const formData = new FormData();  
     formData.append("thumbnail", file);  
     this.http.post("http://localhost:8080/upload", formData);
 
-
     if (file) {
+      this.fileName = file.name;
+      this.fileSize = Math.ceil(file.size / 1024 / 1024 ) + 'МБ';
+
       this.form.patchValue({
         document: file
       }); 

@@ -14,4 +14,8 @@ export class NavigationComponent {
     this.router.navigate(['product']);
   }
 
+  goToGoods() {
+    this.router.navigate(['goods']);
+  }
+
 }
