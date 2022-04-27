@@ -67,7 +67,7 @@
                     <input
                         type="file"
                         class="file__input"
-                        (change)="onFileSelected($event)"
+                        (change)="addDocument($event)"
                         #fileUpload>
 
                     <div class="file-upload">
@@ -85,9 +85,9 @@
                     </div>
                 </div>
 
-                <div class="progress">
+                <!-- <div class="progress">
                     <mat-progress-bar mode="indeterminate"></mat-progress-bar>  
-                </div>
+                </div> -->
             </mat-tab>
         </mat-tab-group>
         <div class="product__button">

@@ -29,6 +29,7 @@ import { ProductImageComponent } from './pages/product-image/product-image.compo
 
 
 import { CoreModule } from './core/core.module'
+import { HttpClientModule } from '@angular/common/http';
 const maskConfig: Partial<IConfig> = {
   validation: false,
 };
@@ -59,7 +60,8 @@ const maskConfig: Partial<IConfig> = {
     DragDropModule,
     NgxMaskModule.forRoot(maskConfig),
     CoreModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

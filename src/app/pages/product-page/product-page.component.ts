@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { ImageService } from 'src/app/core/services/image.service';
 import { Product } from 'src/app/core/interfaces/product.interface';
 import { Image } from 'src/app/core/interfaces/image.interface';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-product-page',
@@ -19,9 +20,16 @@ export class ProductPageComponent {
 
   fileName = '';
 
-  constructor(private imageService: ImageService) {
+  constructor(private imageService: ImageService, private http: HttpClient) {
     this.images$ = this.imageService.images$;
     this.form = this.formGroupInit();
+
+    this.images$.subscribe(value => {
+      this.form.patchValue({
+        image: value
+      }); 
+      
+    })
   }
 
   formGroupInit(): FormGroup {
@@ -30,39 +38,42 @@ export class ProductPageComponent {
       brand: new FormControl(null, Validators.required),
       price: new FormControl(null, Validators.required),
       isActive: new FormControl(true),
-      file: new FormControl(),
+      document: new FormControl(null),
+      image: new FormControl(null)
     })
   }
 
-  addImageProduct(image: any): void{
+  addImageProduct(image: Image): void {
     this.imageService.addImage(image);
   }
 
   addFile(event: any) {
-    console.log(event);
     let file = event.target.files[0];
     let image = this.imageService.creationImage(file);
+
     this.addImageProduct(image);
   }
 
-  onFileSelected(event: any) {
+  addDocument(event: any) {
     const file: File = event.target.files[0];
+    this.fileName = file.name;
+
+    const formData = new FormData();  
+    formData.append("thumbnail", file);  
+    this.http.post("http://localhost:8080/upload", formData);
+
 
     if (file) {
-
-        this.fileName = file.name;
-        const formData = new FormData();
-        formData.set("test", file);
- 
-        console.log(file);
-      
+      this.form.patchValue({
+        document: file
+      }); 
     }
   }
 
   submit() {
     if (this.form.invalid) {
       return
-    }
+    } 
     const productData: Product = this.form.getRawValue();
     console.log(productData);
   }
