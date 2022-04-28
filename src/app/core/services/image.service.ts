@@ -29,13 +29,34 @@ addImage(image: Image): void {
     this._images$.next(images);
 }
 
+resetImage(): void {
+    this._images$.next(['', '', '', '', '', '', '', '', '', '']);
+}
+
 creationImage(file: File): Image {
+
+    const blob2Base64 = (blob: Blob): Promise<string> => {
+        
+        return new Promise<string> ( (resolve,reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onload = () => resolve(reader.result!.toString());
+            reader.onerror = error => reject(error);
+        });
+    }
+
     let image: Image = {
         name: file.name,
         url: `url('${ URL.createObjectURL(file) }')`,
+        urlCover: '',
         size: file.size,
         type: file.type
     }
+
+    blob2Base64(file).then(
+        imageCover => image.urlCover = imageCover
+    );
+    
     return image;
 }
 

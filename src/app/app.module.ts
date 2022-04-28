@@ -17,6 +17,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatCardModule } from '@angular/material/card';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './pages/navigation/navigation.component';
@@ -30,6 +33,9 @@ import { ProductImageComponent } from './pages/product-image/product-image.compo
 
 import { CoreModule } from './core/core.module'
 import { HttpClientModule } from '@angular/common/http';
+import { GoodsComponent } from './pages/goods/goods.component';
+import { ItemComponent } from './pages/item/item.component';
+
 const maskConfig: Partial<IConfig> = {
   validation: false,
 };
@@ -40,6 +46,8 @@ const maskConfig: Partial<IConfig> = {
     NavigationComponent,
     ProductPageComponent,
     ProductImageComponent,
+    GoodsComponent,
+    ItemComponent,
    ],
   imports: [
     BrowserModule,
@@ -61,7 +69,10 @@ const maskConfig: Partial<IConfig> = {
     NgxMaskModule.forRoot(maskConfig),
     CoreModule,
     MatProgressBarModule,
-    HttpClientModule
+    HttpClientModule,
+    MatCardModule,
+    MatPaginatorModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

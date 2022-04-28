@@ -1,9 +1,17 @@
 <div class="goods">
     <div class="goods__head">
-        Все товары
+        Список товаров:
     </div>
 
     <div class="goods__item">
-        <app-item></app-item>
+        <div  *ngFor="let item of goods$ | async">
+            <app-item
+                [item]="item"
+            ></app-item>
+        </div>
     </div>
+
+    <mat-paginator
+        [pageSizeOptions]="[4, 8]">
+    </mat-paginator>
 </div>

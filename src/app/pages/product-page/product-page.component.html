@@ -41,10 +41,11 @@
             </mat-tab>
             <mat-tab label="Загрузка фотографий">
 
-                <div *ngIf="images$ | async as images">
+                <div >
+                    <!-- *ngIf="images$ | async as images" -->
                     <div class="product__image">
                         <app-product-image
-                        *ngFor="let image of images; index as idx;"
+                        *ngFor="let image of data; index as idx;"
                         [numImage]="idx"
                         [image]="image"
                         (onAdd)="addImageProduct($event)"

@@ -1,8 +1,14 @@
 .example-card {
-    max-width: 250px;
+  max-width: 300px;
+  margin: 15px;
+
+  &__image {
+    max-width: 220px;
+    max-height: 250px;
   }
+}
   
-  .example-header-image {
-    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-    background-size: cover;
-  }
+.example-header-image {
+  background-image: url('https://images.unsplash.com/photo-1544816155-12df9643f363?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80');
+  background-size: cover;
+}

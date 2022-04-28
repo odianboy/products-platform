@@ -2,11 +2,14 @@
 
 html,
 body {
-    height: 100%;
-
-    background: #FFFFFF;
+    max-height: 100%;
+    padding-bottom: 10px;
 }
 
 body {
     margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif; }
+    font-family: 'Roboto', "Helvetica Neue", sans-serif;
+    background: #ECE9E6;
+    background: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6);  
+    background: linear-gradient(to right, #FFFFFF, #ECE9E6);
+}
