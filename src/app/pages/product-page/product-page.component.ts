@@ -101,10 +101,6 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subTest.unsubscribe()
-
-    console.log(this.subTest);
-    
+    this.subTest.unsubscribe();
   }
-
 }

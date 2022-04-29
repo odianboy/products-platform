@@ -18,4 +18,8 @@ export class NavigationComponent {
     this.router.navigate(['goods']);
   }
 
+  goToBasket() {
+    this.router.navigate(['basket'])
+  }
+
 }

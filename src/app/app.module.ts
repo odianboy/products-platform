@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -35,6 +35,8 @@ import { CoreModule } from './core/core.module'
 import { HttpClientModule } from '@angular/common/http';
 import { GoodsComponent } from './pages/goods/goods.component';
 import { ItemComponent } from './pages/item/item.component';
+import { BasketComponent } from './pages/basket/basket.component';
+import { MatSortModule } from '@angular/material/sort';
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -48,6 +50,7 @@ const maskConfig: Partial<IConfig> = {
     ProductImageComponent,
     GoodsComponent,
     ItemComponent,
+    BasketComponent,
    ],
   imports: [
     BrowserModule,
@@ -72,7 +75,8 @@ const maskConfig: Partial<IConfig> = {
     HttpClientModule,
     MatCardModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    MatSortModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
