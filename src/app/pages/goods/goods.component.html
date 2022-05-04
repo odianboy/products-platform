@@ -1,24 +1,39 @@
 <div class="goods">
 
-    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-        <mat-icon>filter</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item>
-          <mat-icon>dialpad</mat-icon>
-          <span>Redial</span>
+    <div class="goods__widget">
+        <button
+            class="widget-button"
+            mat-mini-fab
+            color="accent"
+            aria-label="Example icon button with a filter list icon"
+            matTooltip="Сортировка"
+            (click)="getProduct()"
+        >
+            <mat-icon>{{ widgetIcon }}</mat-icon>
         </button>
 
-      </mat-menu>
+        <button
+            mat-mini-fab
+            [matMenuTriggerFor]="menu"
+            color="accent"
+            aria-label="Example icon button with a filter list icon"
+            class="widget-button"
+            matTooltip="Фильтры"
+        >
+            <mat-icon>filter</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" class="widget">
 
-    <button
-        mat-mini-fab
-        color="accent"
-        aria-label="Example icon button with a filter list icon"
-        (click)="getProduct()"
-    >
-        <mat-icon>filter_list</mat-icon>
-    </button>
+            <div (click)="$event.stopPropagation()">
+                <div class="filter-widget">
+                    <mat-checkbox class="widget-check">Обувь</mat-checkbox>
+                    <mat-checkbox class="widget-check">Футблоки</mat-checkbox>
+                </div>
+                
+            </div>
+            
+        </mat-menu>
+    </div>
 
     <div class="goods-content">
         <div class="goods-content__head">

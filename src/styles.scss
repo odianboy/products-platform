@@ -23,3 +23,9 @@ body {
     box-shadow: 4px 4px 14px rgb(0, 0, 0, 0.25);
     cursor: pointer;
 }
+
+.mat-menu-panel {
+    max-width: 200px;
+    max-height: 50px;
+    margin-top: 10px;
+}

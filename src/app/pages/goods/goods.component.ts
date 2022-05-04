@@ -30,4 +30,8 @@ export class GoodsComponent {
     this.sort = !this.sort;
     this.goodsService.getProduct(this.sort);
   }
+
+  get widgetIcon(): string {
+    return this.sort ? 'sort' : 'filter_list';
+  }
 }

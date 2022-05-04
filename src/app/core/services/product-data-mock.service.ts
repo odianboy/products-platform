@@ -9,7 +9,7 @@ import { Product } from '../interfaces/product.interface';
 export class ProductDataMockService {
 
   generateRandomProducts(): Product[] {
-    return Array.from({length: 8}, () => this.randomProduct());
+    return Array.from({length: 4}, () => this.randomProduct());
   }
 
   randomProduct(): Product {
