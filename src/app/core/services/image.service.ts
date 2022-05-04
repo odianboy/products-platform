@@ -18,76 +18,52 @@ export class ImageService {
         this.images$ = this._images$.asObservable();
     }
 
-addImage(image: Image): void {
-    const images = this._images$.getValue();
+    addImage(image: Image): void {
+        const images = this._images$.getValue();
+        let previousIndex = 0;
 
-    if (images.length >= 10) {
-        images.pop();
+        if (images.length >= 10) {
+            images.pop();
+        }
+
+        for (let i = 0; i < images.length; i++) {
+            if (typeof images[i] === 'object') {
+                previousIndex = i + 1;
+            }
+        }
+
+        images.splice(previousIndex, 0, image);
+        this._images$.next(images);
     }
 
-    images.unshift(image);
-    this._images$.next(images);
-}
+    resetImage(): void {
+        this._images$.next(['', '', '', '', '', '', '', '', '', '']);
+    }
 
-resetImage(): void {
-    this._images$.next(['', '', '', '', '', '', '', '', '', '']);
-}
+    creationImage(file: File): Image {
 
-creationImage(file: File): Image {
+        const blob2Base64 = (blob: Blob): Promise<string> => {
+            
+            return new Promise<string> ( (resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onload = () => resolve( reader.result!.toString() );
+                reader.onerror = error => reject(error);
+            });
+        }
 
-    const blob2Base64 = (blob: Blob): Promise<string> => {
+        let image: Image = {
+            name: file.name,
+            url: `url('${ URL.createObjectURL(file) }')`,
+            urlCover: '',
+            size: file.size,
+            type: file.type
+        }
+
+        blob2Base64(file).then(
+            imageCover => image.urlCover = imageCover
+        );
         
-        return new Promise<string> ( (resolve,reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(blob);
-            reader.onload = () => resolve(reader.result!.toString());
-            reader.onerror = error => reject(error);
-        });
+        return image;
     }
-
-    let image: Image = {
-        name: file.name,
-        url: `url('${ URL.createObjectURL(file) }')`,
-        urlCover: '',
-        size: file.size,
-        type: file.type
-    }
-
-    blob2Base64(file).then(
-        imageCover => image.urlCover = imageCover
-    );
-    
-    return image;
-}
-
-// changeOfPosition(event: CdkDragDrop<Image[]>) {
-//     const images = this._images$.getValue();
-
-//     console.log(images);
-//     console.log('было', event.previousIndex,'стало', event.currentIndex);
-    
-
-//     moveItemInArray(images, event.previousIndex, event.currentIndex);
-//     console.log(images);
-
-    // transferArrayItem(
-    //     event.previousContainer.data,
-    //     event.container.data,
-    //     event.previousIndex,
-    //     event.currentIndex
-    //   );
-
-    // console.log(images);
-    
-    // console.log(event);
-
-    // let element = images[event.previousIndex];
-
-    // // console.log(event);
-
-    // images.splice(event.previousIndex, 1);
-    // images.splice(event.currentIndex, 0, element);
-
-    // this._images$.next(images);
-//   };
 }

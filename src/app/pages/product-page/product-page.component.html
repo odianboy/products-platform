@@ -41,11 +41,10 @@
             </mat-tab>
             <mat-tab label="Загрузка фотографий">
 
-                <div >
-                    <!-- *ngIf="images$ | async as images" -->
+                <div *ngIf="images$ | async as images">
                     <div class="product__image">
                         <app-product-image
-                        *ngFor="let image of data; index as idx;"
+                        *ngFor="let image of images; index as idx;"
                         [numImage]="idx"
                         [image]="image"
                         (onAdd)="addImageProduct($event)"
@@ -58,6 +57,7 @@
                         <input
                             class="product__input"
                             type="file"
+                            accept="image/*"
                             (change)="addFile($event)">
                     </button>
                 </div>
@@ -66,6 +66,7 @@
             <mat-tab label="Загрузка документов">
                 <div class="file">
                     <input
+                        accept="application/pdf, application/vnd.ms-excel"
                         type="file"
                         class="file__input"
                         (change)="addDocument($event)"
@@ -85,10 +86,15 @@
                         </button>
                     </div>
                 </div>
-
-                <!-- <div class="progress">
-                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>  
-                </div> -->
+              
+                <div *ngIf="result$ | async as result; else loading"></div>
+                
+                <ng-template #loading>
+                    <ng-container *ngIf="loadingProgress$ | async as progress">
+                        <mat-progress-bar mode="determinate" [value]="progressValue"></mat-progress-bar>
+                    </ng-container>
+                </ng-template>
+                  
             </mat-tab>
         </mat-tab-group>
         <div class="product__button">
@@ -103,3 +109,5 @@
         </div>
     </form>
 </div>
+
+<app-navigation></app-navigation>

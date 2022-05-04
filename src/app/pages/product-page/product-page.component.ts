@@ -1,54 +1,60 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { Observable, Subscription } from 'rxjs';
+import { distinctUntilChanged, filter, map, Observable, share, Subject, switchMap } from 'rxjs';
 
 import { ImageService } from 'src/app/core/services/image.service';
 import { Product } from 'src/app/core/interfaces/product.interface';
 import { Image } from 'src/app/core/interfaces/image.interface';
-import { HttpClient } from '@angular/common/http';
 import { GoodsService } from 'src/app/core/services/goods.service';
+import { LoadingService } from 'src/app/core/services/loading.service';
 
 @Component({
   selector: 'app-product-page',
   templateUrl: './product-page.component.html',
   styleUrls: ['./product-page.component.scss']
 })
-export class ProductPageComponent implements OnInit, OnDestroy {
-
+export class ProductPageComponent {
   images$: Observable<Image[]>
   form: FormGroup;
 
-  subTest!: Subscription;
-  data!: Image[];
-
   fileName = '';
   fileSize = '';
+  progressValue: number;
+
+  private readonly load$ = new Subject<void>();
+
+  private readonly response$ = this.load$.pipe(
+    switchMap(() => this.loadingService.load()),
+    share()
+  );
+
+  readonly result$ = this.response$.pipe(
+    map(response => (typeof response === "string" ? response : null)),
+    distinctUntilChanged()
+  );
+
+  readonly loadingProgress$: Observable<number | unknown> = this.response$.pipe(filter(Number.isFinite));
 
   constructor(
+    @Inject(LoadingService) private readonly loadingService: LoadingService,
     private imageService: ImageService,
-    private http: HttpClient,
     private goodsService: GoodsService) {
     this.images$ = this.imageService.images$;
     this.form = this.formGroupInit();
+    this.progressValue = 0;
 
-    // this.images$.subscribe(value => {
-    //   this.form.patchValue({
-    //     image: value
-    //   }); 
-    // })
-
-
-  }
-
-  ngOnInit(): void {
-    this.subTest = this.images$.subscribe(value => {
+    this.images$.subscribe(value => {
       this.form.patchValue({
         image: value
-      });
-
-      this.data = value
+      }); 
     })
+
+    this.loadingProgress$.subscribe(
+      value => {
+        this.progressValue = Number(value);
+      }
+    )
   }
 
   formGroupInit(): FormGroup {
@@ -75,12 +81,9 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
   addDocument(event: any) {
     const file: File = event.target.files[0];
-    
-    // const formData = new FormData();  
-    // formData.append("thumbnail", file);  
-    // this.http.post("http://localhost:8080/upload", formData);
-
+  
     if (file) {
+      this.load$.next();
       this.fileName = file.name;
       this.fileSize = Math.ceil(file.size / 1024 / 1024 ) + 'МБ';
 
@@ -98,9 +101,5 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     this.goodsService.addProduct(productData);
 
     this.imageService.resetImage();
-  }
-
-  ngOnDestroy(): void {
-    this.subTest.unsubscribe();
   }
 }

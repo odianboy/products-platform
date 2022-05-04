@@ -1,4 +1,4 @@
-import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -20,6 +20,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './pages/navigation/navigation.component';
@@ -77,6 +78,7 @@ const maskConfig: Partial<IConfig> = {
     MatPaginatorModule,
     MatTableModule,
     MatSortModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]

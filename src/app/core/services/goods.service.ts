@@ -16,21 +16,15 @@ export class GoodsService {
     this.goods$ = this._goods$.asObservable();
   }
 
+  getProduct(sort: Boolean = false): void {
+    const goods = this._goods$.getValue();
+    goods.sort( (a, b) => sort ? (a.price) - (b.price) : (b.price) - (a.price) );
+  }
+
   addProduct(product: Product): void {
     const goods = this._goods$.getValue();
     goods.unshift(product);
 
     this._goods$.next(goods);
-  }
-
-  sortByPrice(): void {
-    const goods = this._goods$.getValue();
-
-    let dataSort = goods.sort( (a, b) => (a.price) - (b.price));
-    this._goods$.next([]);
-
-    // console.log(dataSort);
-    
-    this._goods$.next(dataSort);
   }
 }

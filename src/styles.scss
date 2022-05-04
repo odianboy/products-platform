@@ -13,3 +13,13 @@ body {
     background: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6);  
     background: linear-gradient(to right, #FFFFFF, #ECE9E6);
 }
+
+.menu {
+    position: absolute;
+    top: 50%;
+    max-width: auto;
+    background-color: azure;
+    border-radius: 5px;
+    box-shadow: 4px 4px 14px rgb(0, 0, 0, 0.25);
+    cursor: pointer;
+}
