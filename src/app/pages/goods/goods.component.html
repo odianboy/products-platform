@@ -24,13 +24,14 @@
         </button>
         <mat-menu #menu="matMenu" class="widget">
 
-            <div (click)="$event.stopPropagation()">
-                <div class="filter-widget">
-                    <mat-checkbox class="widget-check">Обувь</mat-checkbox>
-                    <mat-checkbox class="widget-check">Футблоки</mat-checkbox>
+            <form (click)="$event.stopPropagation()" [formGroup]="form" (ngSubmit)="submit()">
+                <div class="widget-title">Бренд:</div>
+                <div class="filter-widget" >
+                    <mat-checkbox class="widget-check" formControlName="brand">Nike</mat-checkbox>
                 </div>
+                <button mat-button color="primary" class="filter-button" type="submit">Применить</button>
                 
-            </div>
+            </form>
             
         </mat-menu>
     </div>
@@ -40,14 +41,20 @@
             Список товаров:
         </div>
     
-        <div class="goods-content__item">
-            <div  *ngFor="let item of goods$ | async">
+        <div class="goods-content__item" *ngIf="goods$ | async as goods">
+            <div  *ngFor="let item of goods | paginate: { itemsPerPage: 4, currentPage: p }">
                 <app-item
                     [item]="item"
                     (onBasket)="addItemBasket($event)"
                 ></app-item>
             </div>
         </div>
+
+        <pagination-controls
+            (pageChange)="p = $event"
+            previousLabel="Предыдущая"
+            nextLabel="Следующая"
+        ></pagination-controls>
     </div>
 </div>
 

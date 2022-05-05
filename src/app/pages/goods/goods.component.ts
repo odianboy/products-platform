@@ -4,6 +4,7 @@ import { Product } from 'src/app/core/interfaces/product.interface';
 import { GoodsService } from 'src/app/core/services/goods.service';
 
 import { BasketService } from 'src/app/core/services/basket.service';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-goods',
@@ -14,12 +15,17 @@ export class GoodsComponent {
 
   goods$: Observable<Product[]>;
   sort: Boolean = false;
+  form: FormGroup;
+
+  p: number = 1;
 
   constructor(
     private goodsService: GoodsService,
     private basketService: BasketService) {
-
-    this.goods$ = this.goodsService.goods$;
+      this.form = new FormGroup({
+        brand: new FormControl(true),
+      })
+      this.goods$ = this.goodsService.goods$;
   }
 
   addItemBasket(product: Product): void {
@@ -33,5 +39,10 @@ export class GoodsComponent {
 
   get widgetIcon(): string {
     return this.sort ? 'sort' : 'filter_list';
+  }
+
+  submit() {
+    let value = this.form.getRawValue();
+    this.goodsService.filterProduct(value.brand);
   }
 }

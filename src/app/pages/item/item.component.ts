@@ -25,10 +25,12 @@ export class ItemComponent {
 
   public get imageProduct(): string {
 
-    if (typeof this.item.image[0] === 'object') {
-      for (let image of this.item.image) {
-        return image.urlCover;
+    for (let img of this.item.image) {
+      
+      if(typeof img === 'object') {
+        return img.urlCover;
       }
+
     }
     return noPhoto;
   }

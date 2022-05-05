@@ -13,10 +13,15 @@ export class ProductImageComponent {
   @Input() numImage!: number;
 
   @Output() onAdd = new EventEmitter<Image>();
+  @Output() onDel = new EventEmitter<Image>();
 
   constructor() {}
 
   addImage(image: Image): void {
     this.onAdd.emit(image);
+  }
+
+  delImage(image: Image): void {
+    this.onDel.emit(image);
   }
 }

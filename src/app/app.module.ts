@@ -38,6 +38,8 @@ import { GoodsComponent } from './pages/goods/goods.component';
 import { ItemComponent } from './pages/item/item.component';
 import { BasketComponent } from './pages/basket/basket.component';
 import { MatSortModule } from '@angular/material/sort';
+import { NumberedPaginationModule } from './shared/modules/numbered-pagination/numbered-pagination.module';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -78,7 +80,9 @@ const maskConfig: Partial<IConfig> = {
     MatPaginatorModule,
     MatTableModule,
     MatSortModule,
-    MatMenuModule
+    MatMenuModule,
+    NumberedPaginationModule,
+    NgxPaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent]

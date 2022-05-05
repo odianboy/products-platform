@@ -10,10 +10,12 @@ export class GoodsService {
 
   goods$: Observable<Product[]>;
   private _goods$: BehaviorSubject<Product[]>;
+  product: Product[];
 
   constructor(private mockDataService: ProductDataMockService) {
     this._goods$ = new BehaviorSubject( this.mockDataService.generateRandomProducts() );
     this.goods$ = this._goods$.asObservable();
+    this.product = this._goods$.getValue();
   }
 
   getProduct(sort: Boolean = false): void {
@@ -26,5 +28,17 @@ export class GoodsService {
     goods.unshift(product);
 
     this._goods$.next(goods);
+  }
+
+  filterProduct(brand: Boolean): void {
+    
+    const goods = this._goods$.getValue();
+
+    if(!brand) {
+      let product = goods.filter(value => value.brand !== 'Nike');
+      this._goods$.next(product);
+    } else {
+      this._goods$.next(this.product);
+    }
   }
 }

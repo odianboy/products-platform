@@ -72,6 +72,10 @@ export class ProductPageComponent {
     this.imageService.addImage(image);
   }
 
+  delImageProduct(image: Image): void {
+    this.imageService.delImage(image);
+  }
+
   addFile(event: any) {
     let file = event.target.files[0];
     let image = this.imageService.creationImage(file);
