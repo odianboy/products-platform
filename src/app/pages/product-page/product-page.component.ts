@@ -8,6 +8,7 @@ import { Product } from 'src/app/core/interfaces/product.interface';
 import { Image } from 'src/app/core/interfaces/image.interface';
 import { GoodsService } from 'src/app/core/services/goods.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-product-page',
@@ -17,6 +18,7 @@ import { LoadingService } from 'src/app/core/services/loading.service';
 export class ProductPageComponent {
   images$: Observable<Image[]>
   form: FormGroup;
+  photos!: Image[];
 
   fileName = '';
   fileSize = '';
@@ -45,6 +47,8 @@ export class ProductPageComponent {
     this.progressValue = 0;
 
     this.images$.subscribe(value => {
+      this.photos = value
+
       this.form.patchValue({
         image: value
       }); 
@@ -76,9 +80,31 @@ export class ProductPageComponent {
     this.imageService.delImage(image);
   }
 
-  addFile(event: any) {
+  async addFile(event: any) {
     let file = event.target.files[0];
+    const fileSize = Math.ceil(file.size / 1024 / 1024 );
     let image = this.imageService.creationImage(file);
+
+    if(fileSize > 1) {
+      alert('Файл не может превыщать 1 МБ');
+      return;
+    }
+
+    const imageValidator = (blob: Blob): Promise<any> => {
+
+      return new Promise<any> ( (resolve) => {
+        const photo = new Image();
+        photo.src = URL.createObjectURL(blob)
+        photo.onload = () => resolve( {'width': photo.width, 'height': photo.height})
+      })
+    }
+
+    let resolution = await imageValidator(file);
+
+    if (resolution.width > 1000 || resolution.height > 1000) {
+      alert(`Фото превышает максимальное разрешение 1000x1000. Текущие размеры: ${resolution.width}x${resolution.height}`);
+      return;
+    }
 
     this.addImageProduct(image);
   }
@@ -106,4 +132,14 @@ export class ProductPageComponent {
 
     this.imageService.resetImage();
   }
+
+  // drop(event: CdkDragDrop<string[]>) {
+  //   moveItemInArray(this.photos, event.previousIndex, event.currentIndex);
+  // }
+
+  drop(event: CdkDragDrop<any>) {
+    this.photos[event.previousContainer.data.index]=event.container.data.item
+    this.photos[event.container.data.index]=event.previousContainer.data.item
+  }
+
 }

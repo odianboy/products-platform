@@ -42,14 +42,31 @@
             <mat-tab label="Загрузка фотографий">
 
                 <div *ngIf="images$ | async as images">
-                    <div class="product__image">
-                        <app-product-image
-                        *ngFor="let image of images; index as idx;"
-                        [numImage]="idx"
-                        [image]="image"
-                        (onAdd)="addImageProduct($event)"
-                        (onDel)="delImageProduct($event)"
-                        ></app-product-image>
+
+                    <div
+                        class="product__image"
+                        cdkDropListGroup
+                        >
+                        <div *ngFor="let image of photos; index as idx;">
+                            <div
+                                cdkDropList
+                                (cdkDropListDropped)="drop($event)"
+                                cdkDropListOrientation="horizontal"
+                                [cdkDropListData]="{ item: image, index: idx}"
+                            >
+                                <app-product-image
+                                    [numImage]="idx"
+                                    [image]="image"
+                                    (onAdd)="addImageProduct($event)"
+                                    (onDel)="delImageProduct($event)"
+                                    cdkDrag
+                                >
+                                    <div *cdkDragPlaceholder></div>
+                                </app-product-image>
+                            </div>
+
+                        </div>
+                            
                     </div>
 
                     <button mat-raised-button color="accent" class="product__button_add">
@@ -58,7 +75,7 @@
                         <input
                             class="product__input"
                             type="file"
-                            accept="image/*"
+                            accept="image/jpeg"
                             (change)="addFile($event)">
                     </button>
                 </div>
