@@ -33,6 +33,7 @@ export class GoodsComponent {
   }
 
   getProduct() {
+    this.p = 1;
     this.sort = !this.sort;
     this.goodsService.getProduct(this.sort);
   }
@@ -42,6 +43,7 @@ export class GoodsComponent {
   }
 
   submit() {
+    this.p = 1;
     let value = this.form.getRawValue();
     this.goodsService.filterProduct(value.brand);
   }

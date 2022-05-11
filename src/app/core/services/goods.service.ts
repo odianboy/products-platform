@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Product } from '../interfaces/product.interface';
 import { ProductDataMockService } from './product-data-mock.service';
 
@@ -21,6 +21,12 @@ export class GoodsService {
   getProduct(sort: Boolean = false): void {
     const goods = this._goods$.getValue();
     goods.sort( (a, b) => sort ? (a.price) - (b.price) : (b.price) - (a.price) );
+  }
+
+  getProductByCode(code: number): Observable<Product> {
+    const goods = this._goods$.getValue();
+    let product = goods.find( value => value.code === code );
+    return of( product as Product);
   }
 
   addProduct(product: Product): void {

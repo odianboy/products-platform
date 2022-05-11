@@ -35,3 +35,24 @@ tr.mat-footer-row {
 .mat-table-sticky {
     border-top: 1px solid #e0e0e0;
 }
+
+.mat-row {
+    cursor: pointer;
+}
+
+.mat-row:hover {
+   background-color: azure;
+}
+
+.basket-name:hover {
+    font-weight: bold;
+}
+
+.removeBtn {
+    margin-left: 40px;
+}
+
+.countInput {
+    max-width: 50px;
+    margin-left: 40px;
+}

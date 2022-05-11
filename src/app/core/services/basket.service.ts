@@ -21,4 +21,10 @@ export class BasketService {
     
     this._basket$.next(basket);
   }
+
+  delBasket(product: Product): void {
+    const basket = this._basket$.getValue();
+    let products = basket.filter(value => value !== product);
+    this._basket$.next(products);
+  }
 }

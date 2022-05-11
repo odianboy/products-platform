@@ -23,17 +23,14 @@ export class DropZoneDirective {
   }
 
   @HostListener('dragleave', ['$event']) public onDragLeave(event: DragEvent) {
-
     this.border = 'dotted rgb(0, 0, 0, 0.25)'
-
     this.background = '#fff';
     this.opacity = '1';
-  
     event.preventDefault();
     event.stopPropagation();
   }
 
-  @HostListener('drop', ['$event']) public async ondrop(event: DragEvent) {
+  @HostListener('drop', ['$event']) public ondrop(event: DragEvent) {
     this.opacity = '1';
     this.border = 'dotted rgb(0, 0, 0, 0.25)';
     this.background = '#fff'
@@ -41,36 +38,40 @@ export class DropZoneDirective {
     event.preventDefault();
     event.stopPropagation();
 
-    let file = event.dataTransfer!.files[0];
-    const fileSize = Math.ceil(file.size / 1024 / 1024 );
+    const files = event.dataTransfer!.files;
 
-    if (file.type !== 'image/jpeg') {
-      alert('Можно загружать изображения только формата - jpeg');
-      return;
-    }
+    Array.from(files).forEach( async file => {
 
-    if(fileSize > 1) {
-      alert(`Файл не может превыщать 1 МБ. Текущий размер файла ${fileSize} МБ.`);
-      return;
-    }
+      const fileSize = Math.ceil(file.size / 1024 / 1024 );
 
-    const imageValidator = (blob: Blob): Promise<any> => {
+      if (file.type !== 'image/jpeg') {
+        alert('Можно загружать изображения только формата - jpeg');
+        return;
+      }
 
-      return new Promise<any> ( (resolve) => {
-        const photo = new Image();
-        photo.src = URL.createObjectURL(blob)
-        photo.onload = () => resolve( {'width': photo.width, 'height': photo.height})
-      })
-    }
+      if(fileSize > 1) {
+        alert(`Файл не может превыщать 1 МБ. Текущий размер файла ${fileSize} МБ.`);
+        return;
+      }
 
-    let resolution = await imageValidator(file);
+      const imageValidator = (blob: Blob): Promise<any> => {
 
-    if (resolution.width > 1000 || resolution.height > 1000) {
-      alert(`Фото превышает максимальное разрешение 1000x1000. Текущие размеры: ${resolution.width}x${resolution.height}`);
-      return;
-    }
+        return new Promise<any> ( (resolve) => {
+          const photo = new Image();
+          photo.src = URL.createObjectURL(blob)
+          photo.onload = () => resolve( {'width': photo.width, 'height': photo.height})
+        })
+      }
 
-    let image = this.imageService.creationImage(file);
-    this.onFileDropped.emit(image);
+      let resolution = await imageValidator(file);
+
+      if (resolution.width > 1000 || resolution.height > 1000) {
+        alert(`Фото превышает максимальное разрешение 1000x1000. Текущие размеры: ${resolution.width}x${resolution.height}`);
+        return;
+      }
+
+      let image = this.imageService.creationImage(file);
+      this.onFileDropped.emit(image);
+  });
   }
 }

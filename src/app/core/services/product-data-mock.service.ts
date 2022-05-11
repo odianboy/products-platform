@@ -16,8 +16,9 @@ export class ProductDataMockService {
     return {
       name: this.randomProperty(names),
       brand: this.randomProperty(brands),
-      price: this.genPrice(10000),
-      document: undefined,
+      code: this.genNum(100000),
+      price: this.genNum(10000),
+      document: document,
       image: images,
       isActive: this.genBoolean()
     }
@@ -27,7 +28,7 @@ export class ProductDataMockService {
     return arr[ Math.floor(Math.random() * arr.length) ];
   }
 
-  genPrice(before: number): number {
+  genNum(before: number): number {
     return Math.round(Math.random() * before);
   }
 

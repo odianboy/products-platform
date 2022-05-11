@@ -1,2 +1,2 @@
-export const images = ['', '', '', '', '', '', '', '', '', ''];
+export const images: any = ['', '', '', '', '', '', '', '', '', ''];
 export const noPhoto = 'https://images.unsplash.com/photo-1501951653466-8df816debe46?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=781&q=80';

@@ -39,7 +39,8 @@ export class ImageService {
     delImage(image: Image): void {
         const images = this._images$.getValue();
         let indexProduct = images.indexOf(image);
-        images[indexProduct] = '';
+        images.splice(indexProduct, 1);
+        images.push('');
 
         this._images$.next(images);
     }

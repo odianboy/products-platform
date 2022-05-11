@@ -47,7 +47,8 @@
                         class="product__image"
                         cdkDropListGroup
                         >
-                        <div *ngFor="let image of photos; index as idx;">
+                        <div *ngFor="let image of (productData ? productData.image : photos); index as idx;">
+                            
                             <div
                                 cdkDropList
                                 (cdkDropListDropped)="drop($event)"
@@ -60,23 +61,31 @@
                                     (onAdd)="addImageProduct($event)"
                                     (onDel)="delImageProduct($event)"
                                     cdkDrag
+                                    [cdkDragDisabled]="disabledBtn"
                                 >
                                     <div *cdkDragPlaceholder></div>
                                 </app-product-image>
                             </div>
 
                         </div>
-                            
                     </div>
 
-                    <button mat-raised-button color="accent" class="product__button_add">
+                    <button
+                        mat-raised-button
+                        color="accent"
+                        class="product__button_add"
+                        type="button"
+                        [disabled]="disabledBtn"
+                    >
                         <mat-icon>file_upload</mat-icon>
                         Добавить файлы
                         <input
                             class="product__input"
                             type="file"
                             accept="image/jpeg"
-                            (change)="addFile($event)">
+                            (change)="addFile($event)"
+                            [disabled]="disabledBtn"
+                        >
                     </button>
                 </div>
 
@@ -92,13 +101,15 @@
 
                     <div class="file-upload">
 
-                        {{ fileName || "Загрузите пожалуйста файл" }} {{ fileSize }}
+                       {{ fileInfo || "Загрузите пожалуйста файл" }} {{ fileSize }}
                     
                         <button
+                            type="button"
                             mat-mini-fab
                             color="primary"
                             class="upload-btn"
                             (click)="fileUpload.click()"
+                            [disabled]="disabledBtn"
                         >
                             <mat-icon>attach_file</mat-icon>
                         </button>
@@ -112,7 +123,6 @@
                         <mat-progress-bar mode="determinate" [value]="progressValue"></mat-progress-bar>
                     </ng-container>
                 </ng-template>
-                  
             </mat-tab>
         </mat-tab-group>
         <div class="product__button">
@@ -120,7 +130,7 @@
                 mat-raised-button
                 color="primary"
                 type="submit"
-                [disabled]="form.invalid"
+                [disabled]="form.invalid || disabledBtn"
             >
                 Добавить товар
             </button>

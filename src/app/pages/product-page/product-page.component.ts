@@ -1,14 +1,16 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { distinctUntilChanged, filter, map, Observable, share, Subject, switchMap } from 'rxjs';
+import { distinctUntilChanged, filter, map, Observable, share, Subject, switchMap, take, tap } from 'rxjs';
 
 import { ImageService } from 'src/app/core/services/image.service';
 import { Product } from 'src/app/core/interfaces/product.interface';
 import { Image } from 'src/app/core/interfaces/image.interface';
 import { GoodsService } from 'src/app/core/services/goods.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { ProductDataMockService } from 'src/app/core/services/product-data-mock.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-product-page',
@@ -24,11 +26,13 @@ export class ProductPageComponent {
   fileSize = '';
   progressValue: number;
 
+  productData!: Product;
+
   private readonly load$ = new Subject<void>();
 
   private readonly response$ = this.load$.pipe(
     switchMap(() => this.loadingService.load()),
-    share()
+    share(),
   );
 
   readonly result$ = this.response$.pipe(
@@ -41,7 +45,9 @@ export class ProductPageComponent {
   constructor(
     @Inject(LoadingService) private readonly loadingService: LoadingService,
     private imageService: ImageService,
-    private goodsService: GoodsService) {
+    private goodsService: GoodsService,
+    private mockService: ProductDataMockService,
+    private activetedRoute: ActivatedRoute) {
     this.images$ = this.imageService.images$;
     this.form = this.formGroupInit();
     this.progressValue = 0;
@@ -50,15 +56,24 @@ export class ProductPageComponent {
       this.photos = value
 
       this.form.patchValue({
-        image: value
+        image: this.photos
       }); 
-    })
+    });
 
     this.loadingProgress$.subscribe(
       value => {
         this.progressValue = Number(value);
       }
-    )
+    );
+    
+    this.activetedRoute.data.pipe(
+      map(data => data['product']),
+      tap(data => {
+        this.productData = data ? data : null;
+        this.form.patchValue(data)
+      }),
+      take(1)
+      ).subscribe()
   }
 
   formGroupInit(): FormGroup {
@@ -68,7 +83,8 @@ export class ProductPageComponent {
       price: new FormControl(null, Validators.required),
       isActive: new FormControl(true),
       document: new FormControl(null),
-      image: new FormControl(null)
+      image: new FormControl(null),
+      code: new FormControl(this.mockService.genNum(100000)),
     })
   }
 
@@ -86,7 +102,7 @@ export class ProductPageComponent {
     let image = this.imageService.creationImage(file);
 
     if(fileSize > 1) {
-      alert('Файл не может превыщать 1 МБ');
+      alert('Файл не может превышать 1 МБ');
       return;
     }
 
@@ -131,15 +147,21 @@ export class ProductPageComponent {
     this.goodsService.addProduct(productData);
 
     this.imageService.resetImage();
-  }
 
-  // drop(event: CdkDragDrop<string[]>) {
-  //   moveItemInArray(this.photos, event.previousIndex, event.currentIndex);
-  // }
+    this.form.reset();
+  }
 
   drop(event: CdkDragDrop<any>) {
     this.photos[event.previousContainer.data.index]=event.container.data.item
     this.photos[event.container.data.index]=event.previousContainer.data.item
+  }
+
+  get fileInfo(): string | undefined {
+    return this.productData ? this.productData.document?.name : this.fileName;
+  }
+
+  get disabledBtn(): boolean {
+    return this.productData ? true : false;
   }
 
 }

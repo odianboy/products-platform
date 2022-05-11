@@ -1,5 +1,5 @@
 <mat-card class="example-card">
-    <mat-card-header>
+    <mat-card-header class="card-title" (click)="goToProductPage(item)">
       <div
         mat-card-avatar
         class="example-header-image"
@@ -19,9 +19,9 @@
       </p>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button (click)="addBasket(item)">
-        <mat-icon>add</mat-icon>
-        Добавить в корзину
+      <button mat-button (click)="addBasket(item)" [disabled]="disabledBtn">
+        <mat-icon>{{ iconItem }}</mat-icon>
+        {{ infoButton }}
       </button>
     </mat-card-actions>
   </mat-card>
