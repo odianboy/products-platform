@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { noPhoto } from 'src/app/core/const/image-data.const';
-import { Image } from 'src/app/core/interfaces/image.interface';
+import { ProductImage } from 'src/app/core/interfaces/image.interface';
 import { Product } from 'src/app/core/interfaces/product.interface';
 
 @Component({
@@ -37,7 +37,7 @@ export class ItemComponent {
     for (let img of this.item.image) {
       
       if(typeof img === 'object') {
-        return img.urlCover;
+        return img.url;
       }
     }
     return noPhoto;

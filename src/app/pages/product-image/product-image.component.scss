@@ -9,12 +9,12 @@
     background-size: cover;
 }
 
-.coverImage {
-    font-size: 0;
+.cover-image {
     border: transparent !important;
+    cursor: pointer;
 }
 
-.noCover {
+.no-cover {
     border: dotted rgb(0, 0, 0, 0.25);
 }
 

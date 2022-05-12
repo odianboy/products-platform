@@ -5,7 +5,7 @@ import { distinctUntilChanged, filter, map, Observable, share, Subject, switchMa
 
 import { ImageService } from 'src/app/core/services/image.service';
 import { Product } from 'src/app/core/interfaces/product.interface';
-import { Image } from 'src/app/core/interfaces/image.interface';
+import { ProductImage } from 'src/app/core/interfaces/image.interface';
 import { GoodsService } from 'src/app/core/services/goods.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -18,9 +18,9 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./product-page.component.scss']
 })
 export class ProductPageComponent {
-  images$: Observable<Image[]>
+  images$: Observable<ProductImage[]>
   form: FormGroup;
-  photos!: Image[];
+  photos!: ProductImage[];
 
   fileName = '';
   fileSize = '';
@@ -88,11 +88,11 @@ export class ProductPageComponent {
     })
   }
 
-  addImageProduct(image: Image): void {
+  addImageProduct(image: ProductImage): void {
     this.imageService.addImage(image);
   }
 
-  delImageProduct(image: Image): void {
+  delImageProduct(image: ProductImage): void {
     this.imageService.delImage(image);
   }
 
@@ -140,9 +140,6 @@ export class ProductPageComponent {
   }
 
   submit() {
-    if (this.form.invalid) {
-      return
-    } 
     const productData: Product = this.form.getRawValue();
     this.goodsService.addProduct(productData);
 
@@ -152,8 +149,8 @@ export class ProductPageComponent {
   }
 
   drop(event: CdkDragDrop<any>) {
-    this.photos[event.previousContainer.data.index]=event.container.data.item
-    this.photos[event.container.data.index]=event.previousContainer.data.item
+    this.photos[event.previousContainer.data.index]=event.container.data.item;
+    this.photos[event.container.data.index]=event.previousContainer.data.item;
   }
 
   get fileInfo(): string | undefined {

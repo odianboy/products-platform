@@ -15,9 +15,6 @@ export class BasketComponent {
 
   basket$: Observable<Product[]>;
   dataBasket: Product[];
-
-  countProduct: number;
-
   counterControl: FormControl;
 
   constructor(
@@ -26,18 +23,12 @@ export class BasketComponent {
     ) {
     this.basket$ = this.basketService.basket$;
     this.dataBasket = [] as Product[];
-    this.countProduct = 0;
 
     this.basket$.subscribe( (product) => {
       this.dataBasket = product;
     });
 
     this.counterControl = new FormControl(1)
-
-    // this.counterControl.valueChanges.pipe(
-    //   tap(value => console.log(value))
-    // ).subscribe()
-
   }
 
   displayedColumns = ['name', 'brand', 'price', 'action'];
@@ -52,14 +43,6 @@ export class BasketComponent {
 
   delProdutBasket(product: Product): void {
     this.basketService.delBasket(product);
-  }
-
-  incrementCount() {
-    this.countProduct++;
-  }
-
-  decrementCount() {
-    this.countProduct--;
   }
 
   counter(value: any, product: Product) {

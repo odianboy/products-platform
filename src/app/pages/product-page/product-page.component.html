@@ -53,16 +53,16 @@
                                 cdkDropList
                                 (cdkDropListDropped)="drop($event)"
                                 cdkDropListOrientation="horizontal"
-                                [cdkDropListData]="{ item: image, index: idx}"
+                                [cdkDropListData]="{ item: image, index: idx }"
                             >
                                 <app-product-image
-                                    [numImage]="idx"
                                     [image]="image"
                                     (onAdd)="addImageProduct($event)"
                                     (onDel)="delImageProduct($event)"
                                     cdkDrag
                                     [cdkDragDisabled]="disabledBtn"
                                 >
+                                    {{ idx + 1 }}
                                     <div *cdkDragPlaceholder></div>
                                 </app-product-image>
                             </div>

@@ -1,7 +1,6 @@
-export interface Image {
+export interface ProductImage {
     name: string;
     url: string;
-    urlCover: string;
     size: number;
     type: string;
 }

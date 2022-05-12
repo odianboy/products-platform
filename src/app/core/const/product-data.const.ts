@@ -3,8 +3,7 @@ const photo = 'https://images.unsplash.com/photo-1516962126636-27ad087061cc?ixli
 
 const mockPhoto = {
     name: 'кроссовки-crater-remixa-TVwbvv.jpeg',
-    url: `url(${photo})`,
-    urlCover: photo,
+    url: photo,
     size: 79347,
     type: 'image/jpeg'
 }

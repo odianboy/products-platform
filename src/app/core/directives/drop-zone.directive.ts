@@ -1,5 +1,6 @@
-import { Directive, Output, EventEmitter, HostListener, HostBinding } from '@angular/core';
-import { Image } from '../interfaces/image.interface';
+import { Directive, Output, EventEmitter, HostListener } from '@angular/core';
+import { fromEvent, Observable } from 'rxjs';
+import { ProductImage } from '../interfaces/image.interface';
 import { ImageService } from '../services/image.service';
 
 @Directive({
@@ -7,34 +8,21 @@ import { ImageService } from '../services/image.service';
 })
 export class DropZoneDirective {
 
-  @Output() onFileDropped = new EventEmitter<Image>();
-  @HostBinding('style.background-color') public background = '#fff';
-  @HostBinding('style.opacity') public opacity = '1';
-  @HostBinding('style.border') public border!: string;
+  @Output() onFileDropped = new EventEmitter<ProductImage>();
 
   constructor(private imageService: ImageService) { }
 
   @HostListener('dragover', ['$event']) onDragOver(event: DragEvent) {
-    this.background = '#9ecbec';
-    this.opacity = '0.5';
-    this.border = 'none';
     event.preventDefault();
     event.stopPropagation();
   }
 
   @HostListener('dragleave', ['$event']) public onDragLeave(event: DragEvent) {
-    this.border = 'dotted rgb(0, 0, 0, 0.25)'
-    this.background = '#fff';
-    this.opacity = '1';
     event.preventDefault();
     event.stopPropagation();
   }
 
   @HostListener('drop', ['$event']) public ondrop(event: DragEvent) {
-    this.opacity = '1';
-    this.border = 'dotted rgb(0, 0, 0, 0.25)';
-    this.background = '#fff'
-
     event.preventDefault();
     event.stopPropagation();
 
@@ -59,7 +47,7 @@ export class DropZoneDirective {
         return new Promise<any> ( (resolve) => {
           const photo = new Image();
           photo.src = URL.createObjectURL(blob)
-          photo.onload = () => resolve( {'width': photo.width, 'height': photo.height})
+          photo.onload = () => resolve( {'width': photo.width, 'height': photo.height} )
         })
       }
 
@@ -69,6 +57,11 @@ export class DropZoneDirective {
         alert(`Фото превышает максимальное разрешение 1000x1000. Текущие размеры: ${resolution.width}x${resolution.height}`);
         return;
       }
+
+      const photo = new Image();
+      photo.src = URL.createObjectURL(file)
+
+      fromEvent(photo, 'load').subscribe(val => console.log(val));
 
       let image = this.imageService.creationImage(file);
       this.onFileDropped.emit(image);

@@ -1,22 +1,32 @@
-<div class="image">
-    <div class="image-close">
-        <mat-icon (click)="delImage(image)">content_cut</mat-icon>
-    </div>
+<div class="image" *ngIf="!image.type; else cover">
     <div
-        class="image-card"
+        (dragover)="imageOver($event)"
+        (dragleave)="imageLeave($event)"
+        (drop)="imageDrop($event)"
+        class="image-card no-cover"
         appDropZone
         (onFileDropped)="addImage($event)"
-        [ngStyle]="{
-            'background-image': image.type ?
-                image.url: 'none'
-        }"
-        [ngClass]="{
-            coverImage: image.type,
-            noCover: !image.type
-        }"
     >
-       {{ numImage + 1 }}
+        <ng-content></ng-content>
     </div>
 </div>
 
-<!-- attr.data-index]="" -->
+<ng-template #cover>
+    <div class="image">
+        <div class="image-close">
+            <mat-icon (click)="delImage(image)">content_cut</mat-icon>
+        </div>
+            
+        <img
+            (dragover)="imageOver($event)"
+            (dragleave)="imageLeave($event)"
+            (drop)="imageDrop($event)"
+            class="image-card cover-image"
+            appDropZone
+            (onFileDropped)="addImage($event)"
+            [src]="image.url"
+        >
+    </div>
+</ng-template>
+
+<!-- [attr.data-index]="" -->

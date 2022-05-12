@@ -3,14 +3,14 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { images } from '../const/image-data.const';
-import { Image } from '../interfaces/image.interface';
+import { ProductImage } from '../interfaces/image.interface';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ImageService {
 
-    images$: Observable<Image[]>;
+    images$: Observable<ProductImage[]>;
     private _images$: BehaviorSubject<any[]>;
 
     constructor() {
@@ -18,7 +18,7 @@ export class ImageService {
         this.images$ = this._images$.asObservable();
     }
 
-    addImage(image: Image): void {
+    addImage(image: ProductImage): void {
         const images = this._images$.getValue();
         let previousIndex = 0;
 
@@ -36,7 +36,7 @@ export class ImageService {
         this._images$.next(images);
     }
 
-    delImage(image: Image): void {
+    delImage(image: ProductImage): void {
         const images = this._images$.getValue();
         let indexProduct = images.indexOf(image);
         images.splice(indexProduct, 1);
@@ -49,7 +49,7 @@ export class ImageService {
         this._images$.next(['', '', '', '', '', '', '', '', '', '']);
     }
 
-    creationImage(file: File): Image {
+    creationImage(file: File): ProductImage {
 
         const blob2Base64 = (blob: Blob): Promise<string> => {
             
@@ -61,16 +61,15 @@ export class ImageService {
             });
         }
 
-        let image: Image = {
+        let image: ProductImage = {
             name: file.name,
-            url: `url('${ URL.createObjectURL(file) }')`,
-            urlCover: '',
+            url: '',
             size: file.size,
             type: file.type
         }
 
         blob2Base64(file).then(
-            imageCover => image.urlCover = imageCover
+            imageUrl => image.url = imageUrl
         );
         
         return image;
