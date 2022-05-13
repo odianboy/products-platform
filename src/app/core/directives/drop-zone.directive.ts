@@ -1,7 +1,8 @@
 import { Directive, Output, EventEmitter, HostListener } from '@angular/core';
-import { fromEvent, Observable } from 'rxjs';
-import { ProductImage } from '../interfaces/image.interface';
+import { fromEvent, map, Observable, take } from 'rxjs';
+import { ISize, ProductImage } from '../interfaces/image.interface';
 import { ImageService } from '../services/image.service';
+import { ValidationService } from '../services/validation.service';
 
 @Directive({
   selector: '[appDropZone]'
@@ -10,7 +11,10 @@ export class DropZoneDirective {
 
   @Output() onFileDropped = new EventEmitter<ProductImage>();
 
-  constructor(private imageService: ImageService) { }
+  constructor(
+    private imageService: ImageService,
+    private validService: ValidationService
+  ) { }
 
   @HostListener('dragover', ['$event']) onDragOver(event: DragEvent) {
     event.preventDefault();
@@ -30,38 +34,34 @@ export class DropZoneDirective {
 
     Array.from(files).forEach( async file => {
 
-      const fileSize = Math.ceil(file.size / 1024 / 1024 );
-
-      if (file.type !== 'image/jpeg') {
-        alert('Можно загружать изображения только формата - jpeg');
+      if (this.validService.checkType(file)) {
         return;
       }
 
-      if(fileSize > 1) {
-        alert(`Файл не может превыщать 1 МБ. Текущий размер файла ${fileSize} МБ.`);
+      if (this.validService.checkSize(file)) {
         return;
       }
 
-      const imageValidator = (blob: Blob): Promise<any> => {
-
-        return new Promise<any> ( (resolve) => {
-          const photo = new Image();
-          photo.src = URL.createObjectURL(blob)
-          photo.onload = () => resolve( {'width': photo.width, 'height': photo.height} )
-        })
-      }
-
-      let resolution = await imageValidator(file);
-
-      if (resolution.width > 1000 || resolution.height > 1000) {
-        alert(`Фото превышает максимальное разрешение 1000x1000. Текущие размеры: ${resolution.width}x${resolution.height}`);
+      if (await this.validService.checkResolution(file)) {
         return;
       }
 
-      const photo = new Image();
-      photo.src = URL.createObjectURL(file)
+    //  function getImgSize(imageSrc: string): Observable<ISize> {
 
-      fromEvent(photo, 'load').subscribe(val => console.log(val));
+    //     let mapLoadedImage = (event: any): ISize => ({
+    //       width: event.target.width,
+    //       height: event.target.height
+    //     })
+      
+    //     let image = new Image();
+    //     image.src = imageSrc;
+    
+    //     let $loadedImg = fromEvent(image, "load").pipe(take(1), map(mapLoadedImage));
+        
+    //     return $loadedImg;
+    //   }
+
+    //   getImgSize(URL.createObjectURL(file)).subscribe(value => console.log(value))
 
       let image = this.imageService.creationImage(file);
       this.onFileDropped.emit(image);

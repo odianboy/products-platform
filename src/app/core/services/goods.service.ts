@@ -24,8 +24,8 @@ export class GoodsService {
   }
 
   getProductByCode(code: number): Observable<Product> {
-    const goods = this._goods$.getValue();
-    let product = goods.find( value => value.code === code );
+    
+    let product = this.product.find( value => value.code === code );
     return of( product as Product);
   }
 

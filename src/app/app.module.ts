@@ -21,6 +21,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './pages/navigation/navigation.component';
@@ -40,6 +41,7 @@ import { BasketComponent } from './pages/basket/basket.component';
 import { MatSortModule } from '@angular/material/sort';
 import { NumberedPaginationModule } from './shared/modules/numbered-pagination/numbered-pagination.module';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ValidDialogComponent } from './pages/valid-dialog/valid-dialog.component';
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -54,6 +56,7 @@ const maskConfig: Partial<IConfig> = {
     GoodsComponent,
     ItemComponent,
     BasketComponent,
+    ValidDialogComponent
    ],
   imports: [
     BrowserModule,
@@ -82,9 +85,10 @@ const maskConfig: Partial<IConfig> = {
     MatSortModule,
     MatMenuModule,
     NumberedPaginationModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    MatDialogModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

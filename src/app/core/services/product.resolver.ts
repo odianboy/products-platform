@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
     Resolve,
-    RouterStateSnapshot,
     ActivatedRouteSnapshot
 } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -12,7 +11,7 @@ import { GoodsService } from './goods.service';
 @Injectable({
     providedIn: 'root'
 })
-export class ProductResolver implements Resolve<Product>{
+export class ProductResolver implements Resolve<Product> {
     
     constructor(
         private goodsService: GoodsService) {}

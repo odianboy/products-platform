@@ -8,9 +8,11 @@ import { Product } from 'src/app/core/interfaces/product.interface';
 import { ProductImage } from 'src/app/core/interfaces/image.interface';
 import { GoodsService } from 'src/app/core/services/goods.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { ProductDataMockService } from 'src/app/core/services/product-data-mock.service';
 import { ActivatedRoute } from '@angular/router';
+
+import { ValidationService } from 'src/app/core/services/validation.service';
 
 @Component({
   selector: 'app-product-page',
@@ -44,25 +46,27 @@ export class ProductPageComponent {
 
   constructor(
     @Inject(LoadingService) private readonly loadingService: LoadingService,
+    private validService: ValidationService,
     private imageService: ImageService,
     private goodsService: GoodsService,
     private mockService: ProductDataMockService,
-    private activetedRoute: ActivatedRoute) {
-    this.images$ = this.imageService.images$;
-    this.form = this.formGroupInit();
-    this.progressValue = 0;
+    private activetedRoute: ActivatedRoute
+    ) {
+      this.images$ = this.imageService.images$;
+      this.form = this.formGroupInit();
+      this.progressValue = 0;
 
-    this.images$.subscribe(value => {
-      this.photos = value
+      this.images$.subscribe(value => {
+        this.photos = value
 
-      this.form.patchValue({
-        image: this.photos
-      }); 
-    });
+        this.form.patchValue({
+          image: this.photos
+        }); 
+      });
 
-    this.loadingProgress$.subscribe(
-      value => {
-        this.progressValue = Number(value);
+      this.loadingProgress$.subscribe(
+        value => {
+          this.progressValue = Number(value);
       }
     );
     
@@ -98,31 +102,20 @@ export class ProductPageComponent {
 
   async addFile(event: any) {
     let file = event.target.files[0];
-    const fileSize = Math.ceil(file.size / 1024 / 1024 );
-    let image = this.imageService.creationImage(file);
 
-    if(fileSize > 1) {
-      alert('Файл не может превышать 1 МБ');
-      return;
+    if (file) {
+
+      if (this.validService.checkSize(file)) {
+        return;
+      }
+
+      if (await this.validService.checkResolution(file)) {
+        return;
+      }
+
+      let image = this.imageService.creationImage(file);
+      this.addImageProduct(image);
     }
-
-    const imageValidator = (blob: Blob): Promise<any> => {
-
-      return new Promise<any> ( (resolve) => {
-        const photo = new Image();
-        photo.src = URL.createObjectURL(blob)
-        photo.onload = () => resolve( {'width': photo.width, 'height': photo.height})
-      })
-    }
-
-    let resolution = await imageValidator(file);
-
-    if (resolution.width > 1000 || resolution.height > 1000) {
-      alert(`Фото превышает максимальное разрешение 1000x1000. Текущие размеры: ${resolution.width}x${resolution.height}`);
-      return;
-    }
-
-    this.addImageProduct(image);
   }
 
   addDocument(event: any) {
@@ -144,7 +137,6 @@ export class ProductPageComponent {
     this.goodsService.addProduct(productData);
 
     this.imageService.resetImage();
-
     this.form.reset();
   }
 
