@@ -46,9 +46,8 @@
                     <div
                         class="product__image"
                         cdkDropListGroup
-                        >
-                        <div *ngFor="let image of (productData ? productData.image : photos); index as idx;">
-                            
+                    >
+                        <ng-container *ngFor="let image of (productData ? productData.image : photos); index as idx;">
                             <div
                                 cdkDropList
                                 (cdkDropListDropped)="drop($event)"
@@ -66,10 +65,9 @@
                                     <div *cdkDragPlaceholder></div>
                                 </app-product-image>
                             </div>
-
-                        </div>
+                        </ng-container>
                     </div>
-
+                    
                     <button
                         mat-raised-button
                         color="accent"
@@ -124,7 +122,7 @@
                         <mat-progress-bar mode="determinate" [value]="progressValue"></mat-progress-bar>
                     </ng-container>
                 </ng-template>
-                
+
             </mat-tab>
         </mat-tab-group>
         <div class="product__button">

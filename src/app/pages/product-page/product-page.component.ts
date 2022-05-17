@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { distinctUntilChanged, filter, map, Observable, share, Subject, switchMap, take, tap } from 'rxjs';
 
@@ -50,7 +50,8 @@ export class ProductPageComponent {
     private imageService: ImageService,
     private goodsService: GoodsService,
     private mockService: ProductDataMockService,
-    private activetedRoute: ActivatedRoute
+    private activetedRoute: ActivatedRoute,
+    private fb: FormBuilder,
     ) {
       this.images$ = this.imageService.images$;
       this.form = this.formGroupInit();
@@ -77,23 +78,34 @@ export class ProductPageComponent {
         this.form.patchValue(data)
       }),
       take(1)
-      ).subscribe()
+      ).subscribe();
   }
 
   formGroupInit(): FormGroup {
-    return new FormGroup({
-      name: new FormControl(null, Validators.required),
-      brand: new FormControl(null, Validators.required),
-      price: new FormControl(null, Validators.required),
-      isActive: new FormControl(true),
-      document: new FormControl(null),
-      image: new FormControl(null),
-      code: new FormControl(this.mockService.genNum(100000)),
+    return this.fb.group({
+      name: [null, Validators.required],
+      brand: [null, Validators.required],
+      price: [null, Validators.required],
+      isActive: [true],
+      document: [null],
+      image: [null],
+      code: [this.mockService.genNum(100000)],
+      // images: this.fb.array([])
     })
   }
 
+  // get imagesArray(): FormArray {
+  //   return this.form.controls['images'] as FormArray;
+  // }
+
   addImageProduct(image: ProductImage): void {
     this.imageService.addImage(image);
+
+    // const img = this.fb.group({
+    //   imgControl: [image]
+    // })
+
+    // this.imagesArray.push(img)
   }
 
   delImageProduct(image: ProductImage): void {

@@ -49,6 +49,6 @@ export class ProductImageComponent {
   }
 
   checkClassName(event: any) {
-    return event.target.className.includes('coverImage')
+    return event.target.className.includes('coverImage');
   }
 }
