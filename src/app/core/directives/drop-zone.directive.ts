@@ -46,23 +46,6 @@ export class DropZoneDirective {
         return;
       }
 
-    //  function getImgSize(imageSrc: string): Observable<ISize> {
-
-    //     let mapLoadedImage = (event: any): ISize => ({
-    //       width: event.target.width,
-    //       height: event.target.height
-    //     })
-      
-    //     let image = new Image();
-    //     image.src = imageSrc;
-    
-    //     let $loadedImg = fromEvent(image, "load").pipe(take(1), map(mapLoadedImage));
-        
-    //     return $loadedImg;
-    //   }
-
-    //   getImgSize(URL.createObjectURL(file)).subscribe(value => console.log(value))
-
       let image = this.imageService.creationImage(file);
       this.onFileDropped.emit(image);
   });
