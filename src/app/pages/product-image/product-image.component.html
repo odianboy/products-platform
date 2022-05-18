@@ -1,4 +1,4 @@
-<div class="image" *ngIf="!image.type; else cover">
+<div class="image" *ngIf="!image.url; else cover">
     <div
         (dragover)="imageOver($event)"
         (dragleave)="imageLeave($event)"

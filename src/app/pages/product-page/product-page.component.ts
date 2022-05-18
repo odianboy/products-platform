@@ -13,6 +13,7 @@ import { ProductDataMockService } from 'src/app/core/services/product-data-mock.
 import { ActivatedRoute } from '@angular/router';
 
 import { ValidationService } from 'src/app/core/services/validation.service';
+import { Photo } from 'src/app/core/services/photo';
 
 @Component({
   selector: 'app-product-page',
@@ -29,6 +30,7 @@ export class ProductPageComponent {
   progressValue: number;
 
   productData!: Product;
+  pdfFile!: File;
 
   private readonly load$ = new Subject<void>();
 
@@ -59,9 +61,9 @@ export class ProductPageComponent {
 
       this.images$.subscribe(value => {
         this.photos = value
-
         this.form.patchValue({
-          image: this.photos
+          // image: this.photos,
+          images: this.photos,
         }); 
       });
 
@@ -81,6 +83,10 @@ export class ProductPageComponent {
       ).subscribe();
   }
 
+  genImgageControl() {
+    return Array.from({length: 10}, () => this.fb.control(new Photo('')));
+  }
+
   formGroupInit(): FormGroup {
     return this.fb.group({
       name: [null, Validators.required],
@@ -88,15 +94,17 @@ export class ProductPageComponent {
       price: [null, Validators.required],
       isActive: [true],
       document: [null],
-      image: [null],
+      // image: [null],
       code: [this.mockService.genNum(100000)],
-      // images: this.fb.array([])
+      images: this.fb.array(
+        this.genImgageControl()
+      )
     })
   }
 
-  // get imagesArray(): FormArray {
-  //   return this.form.controls['images'] as FormArray;
-  // }
+  get imagesArray(): FormArray {
+    return this.form.controls['images'] as FormArray;
+  }
 
   addImageProduct(image: ProductImage): void {
     this.imageService.addImage(image);
@@ -137,6 +145,7 @@ export class ProductPageComponent {
       this.load$.next();
       this.fileName = file.name;
       this.fileSize = Math.ceil(file.size / 1024 / 1024 ) + 'МБ';
+      this.pdfFile = file;
 
       this.form.patchValue({
         document: file
@@ -145,16 +154,20 @@ export class ProductPageComponent {
   }
 
   submit() {
-    const productData: Product = this.form.getRawValue();
+    const productData: Product = this.form.getRawValue();   
     this.goodsService.addProduct(productData);
+
+
+    console.log(this.form.getRawValue());
+    
 
     this.imageService.resetImage();
     this.form.reset();
   }
 
   drop(event: CdkDragDrop<any>) {
-    this.photos[event.previousContainer.data.index]=event.container.data.item;
-    this.photos[event.container.data.index]=event.previousContainer.data.item;
+    this.photos[event.previousContainer.data.index] = event.container.data.item;
+    this.photos[event.container.data.index] = event.previousContainer.data.item;
   }
 
   get fileInfo(): string | undefined {
@@ -163,6 +176,10 @@ export class ProductPageComponent {
 
   get disabledBtn(): boolean {
     return this.productData ? true : false;
+  }
+
+  openPdfFile() {
+
   }
 
 }

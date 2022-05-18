@@ -34,7 +34,7 @@ export class ItemComponent {
 
   public get imageProduct(): string {
 
-    for (let img of this.item.image) {
+    for (let img of this.item.images) {
       
       if(typeof img === 'object') {
         return img.url;

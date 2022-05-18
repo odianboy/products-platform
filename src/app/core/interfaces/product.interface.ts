@@ -5,6 +5,6 @@ export interface Product {
     code: number;
     price: number;
     document?: any;
-    image: ProductImage[];
+    images: ProductImage[];
     isActive: boolean;
 }

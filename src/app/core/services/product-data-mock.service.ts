@@ -19,7 +19,7 @@ export class ProductDataMockService {
       code: this.genNum(100000),
       price: this.genNum(10000),
       document: document,
-      image: images,
+      images: images,
       isActive: this.genBoolean()
     }
   }
