@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { noPhoto } from 'src/app/core/const/image-data.const';
-import { ProductImage } from 'src/app/core/interfaces/image.interface';
+import { noImage } from 'src/app/core/const/product-data.const';
 import { Product } from 'src/app/core/interfaces/product.interface';
 
 @Component({
@@ -29,18 +28,18 @@ export class ItemComponent {
 
   goToProductPage(item: Product): void {
     const productCode = item ? item.code : null;
-    this.router.navigate(['/product', productCode])
+
+    this.router.navigate(['/product', productCode]);
   }
 
   public get imageProduct(): string {
 
-    for (let img of this.item.images) {
-      
-      if(typeof img === 'object') {
-        return img.url;
+    for (let image of this.item.images) {
+      if(image.url) {
+        return image.url
       }
     }
-    return noPhoto;
+    return noImage;
   }
 
   public get infoButton(): string {

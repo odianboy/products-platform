@@ -2,19 +2,20 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { images } from '../const/image-data.const';
+import { genImage } from '../const/image-data.const';
 import { ProductImage } from '../interfaces/image.interface';
+import { Photo } from './photo';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ImageService {
+export class ImageQueueService {
 
     images$: Observable<ProductImage[]>;
     private _images$: BehaviorSubject<any[]>;
 
     constructor() {
-        this._images$ = new BehaviorSubject(images);
+        this._images$ = new BehaviorSubject(genImage());
         this.images$ = this._images$.asObservable();
     }
 
@@ -26,11 +27,7 @@ export class ImageService {
             images.pop();
         }
 
-        for (let i = 0; i < images.length; i++) {
-            if (typeof images[i] === 'object') {
-                previousIndex = i + 1;
-            }
-        }
+        images.forEach( (image, index) => image.url ? previousIndex = index + 1 : index)
 
         images.splice(previousIndex, 0, image);
         this._images$.next(images);
@@ -39,14 +36,15 @@ export class ImageService {
     delImage(image: ProductImage): void {
         const images = this._images$.getValue();
         let indexProduct = images.indexOf(image);
+
         images.splice(indexProduct, 1);
-        images.push('');
+        images.push(new Photo(''));
 
         this._images$.next(images);
     }
 
     resetImage(): void {
-        this._images$.next(['', '', '', '', '', '', '', '', '', '']);
+        this._images$.next(genImage());
     }
 
     creationImage(file: File): ProductImage {

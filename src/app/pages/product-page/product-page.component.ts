@@ -1,19 +1,37 @@
 import { Component, Inject } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators
+} from '@angular/forms';
 
-import { distinctUntilChanged, filter, map, Observable, share, Subject, switchMap, take, tap } from 'rxjs';
+import {
+  distinctUntilChanged,
+  filter,
+  map,
+  Observable,
+  share,
+  Subject,
+  switchMap,
+  take,
+  tap 
+} from 'rxjs';
 
-import { ImageService } from 'src/app/core/services/image.service';
 import { Product } from 'src/app/core/interfaces/product.interface';
 import { ProductImage } from 'src/app/core/interfaces/image.interface';
-import { GoodsService } from 'src/app/core/services/goods.service';
-import { LoadingService } from 'src/app/core/services/loading.service';
+import { Photo } from 'src/app/core/services/photo';
+
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { ProductDataMockService } from 'src/app/core/services/product-data-mock.service';
 import { ActivatedRoute } from '@angular/router';
 
 import { ValidationService } from 'src/app/core/services/validation.service';
-import { Photo } from 'src/app/core/services/photo';
+import { GoodsService } from 'src/app/core/services/goods.service';
+import { LoadingService } from 'src/app/core/services/loading.service';
+import { ImageQueueService } from 'src/app/core/services/image-queue.service';
+import { DocumentService } from 'src/app/core/services/document.service';
+import { ProductDataMockService } from 'src/app/core/services/product-data-mock.service';
 
 @Component({
   selector: 'app-product-page',
@@ -21,16 +39,17 @@ import { Photo } from 'src/app/core/services/photo';
   styleUrls: ['./product-page.component.scss']
 })
 export class ProductPageComponent {
-  images$: Observable<ProductImage[]>
+  images$: Observable<ProductImage[]>;
   form: FormGroup;
-  photos!: ProductImage[];
+  photos: ProductImage[];
 
-  fileName = '';
-  fileSize = '';
+  fileName: string;
+  fileSize: string;
+
   progressValue: number;
-
   productData!: Product;
-  pdfFile!: File;
+
+  document!: File;
 
   private readonly load$ = new Subject<void>();
 
@@ -49,30 +68,34 @@ export class ProductPageComponent {
   constructor(
     @Inject(LoadingService) private readonly loadingService: LoadingService,
     private validService: ValidationService,
-    private imageService: ImageService,
+    private ImageQueueService: ImageQueueService,
     private goodsService: GoodsService,
     private mockService: ProductDataMockService,
+    private docService: DocumentService,
     private activetedRoute: ActivatedRoute,
     private fb: FormBuilder,
     ) {
-      this.images$ = this.imageService.images$;
+      this.images$ = this.ImageQueueService.images$;
       this.form = this.formGroupInit();
+      this.photos = [] as ProductImage[];
       this.progressValue = 0;
+      this.fileName = '';
+      this.fileSize = '';
 
       this.images$.subscribe(value => {
         this.photos = value
+
         this.form.patchValue({
-          // image: this.photos,
           images: this.photos,
         }); 
       });
-
+      
       this.loadingProgress$.subscribe(
         value => {
           this.progressValue = Number(value);
       }
     );
-    
+
     this.activetedRoute.data.pipe(
       map(data => data['product']),
       tap(data => {
@@ -83,10 +106,6 @@ export class ProductPageComponent {
       ).subscribe();
   }
 
-  genImgageControl() {
-    return Array.from({length: 10}, () => this.fb.control(new Photo('')));
-  }
-
   formGroupInit(): FormGroup {
     return this.fb.group({
       name: [null, Validators.required],
@@ -94,33 +113,18 @@ export class ProductPageComponent {
       price: [null, Validators.required],
       isActive: [true],
       document: [null],
-      // image: [null],
-      code: [this.mockService.genNum(100000)],
+      code: [null],
       images: this.fb.array(
-        this.genImgageControl()
+        this.genImageControl()
       )
     })
   }
 
-  get imagesArray(): FormArray {
-    return this.form.controls['images'] as FormArray;
+  addImage(image: ProductImage): void {
+    this.ImageQueueService.addImage(image);
   }
 
-  addImageProduct(image: ProductImage): void {
-    this.imageService.addImage(image);
-
-    // const img = this.fb.group({
-    //   imgControl: [image]
-    // })
-
-    // this.imagesArray.push(img)
-  }
-
-  delImageProduct(image: ProductImage): void {
-    this.imageService.delImage(image);
-  }
-
-  async addFile(event: any) {
+  async addImageProduct(event: any) {
     let file = event.target.files[0];
 
     if (file) {
@@ -133,9 +137,13 @@ export class ProductPageComponent {
         return;
       }
 
-      let image = this.imageService.creationImage(file);
-      this.addImageProduct(image);
+      let image = this.ImageQueueService.creationImage(file);
+      this.addImage(image);
     }
+  }
+
+  delImageProduct(image: ProductImage): void {
+    this.ImageQueueService.delImage(image);
   }
 
   addDocument(event: any) {
@@ -144,30 +152,45 @@ export class ProductPageComponent {
     if (file) {
       this.load$.next();
       this.fileName = file.name;
-      this.fileSize = Math.ceil(file.size / 1024 / 1024 ) + 'МБ';
-      this.pdfFile = file;
+      this.fileSize = this.docService.getSize(file);
+      this.document = file;
 
       this.form.patchValue({
         document: file
-      }); 
+      });
     }
   }
 
   submit() {
-    const productData: Product = this.form.getRawValue();   
+    this.form.patchValue({
+      code: this.mockService.genNum(100000)}
+    );
+    const productData: Product = this.form.getRawValue();
     this.goodsService.addProduct(productData);
 
-
     console.log(this.form.getRawValue());
-    
 
-    this.imageService.resetImage();
     this.form.reset();
+    this.ImageQueueService.resetImage();
   }
 
   drop(event: CdkDragDrop<any>) {
     this.photos[event.previousContainer.data.index] = event.container.data.item;
     this.photos[event.container.data.index] = event.previousContainer.data.item;
+  }
+
+  genImageControl() {
+    return Array.from({length: 10}, () => this.fb.control(new Photo('')));
+  }
+
+  openPdfFile() {
+
+    if (this.document || this.productData?.document) {
+
+      const fileURL = URL.createObjectURL(this.document ?? this.productData?.document);
+      window.open(fileURL, '_blank');
+    }
+    return
   }
 
   get fileInfo(): string | undefined {
@@ -177,9 +200,4 @@ export class ProductPageComponent {
   get disabledBtn(): boolean {
     return this.productData ? true : false;
   }
-
-  openPdfFile() {
-
-  }
-
 }

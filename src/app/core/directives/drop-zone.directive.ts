@@ -1,7 +1,7 @@
 import { Directive, Output, EventEmitter, HostListener } from '@angular/core';
 import { fromEvent, map, Observable, take } from 'rxjs';
 import { ISize, ProductImage } from '../interfaces/image.interface';
-import { ImageService } from '../services/image.service';
+import { ImageQueueService } from '../services/image-queue.service';
 import { ValidationService } from '../services/validation.service';
 
 @Directive({
@@ -12,7 +12,7 @@ export class DropZoneDirective {
   @Output() onFileDropped = new EventEmitter<ProductImage>();
 
   constructor(
-    private imageService: ImageService,
+    private ImageQueueService: ImageQueueService,
     private validService: ValidationService
   ) { }
 
@@ -46,8 +46,8 @@ export class DropZoneDirective {
         return;
       }
 
-      let image = this.imageService.creationImage(file);
+      let image = this.ImageQueueService.creationImage(file);
       this.onFileDropped.emit(image);
-  });
+    });
   }
 }

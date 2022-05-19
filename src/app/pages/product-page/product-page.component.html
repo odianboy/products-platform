@@ -56,7 +56,7 @@
                             >
                                 <app-product-image
                                     [image]="image"
-                                    (onAdd)="addImageProduct($event)"
+                                    (onAdd)="addImage($event)"
                                     (onDel)="delImageProduct($event)"
                                     cdkDrag
                                     [cdkDragDisabled]="disabledBtn"
@@ -81,7 +81,7 @@
                             class="product__input"
                             type="file"
                             accept="image/jpeg"
-                            (change)="addFile($event)"
+                            (change)="addImageProduct($event)"
                             [disabled]="disabledBtn"
                         >
                     </button>
@@ -100,7 +100,7 @@
 
                     <div class="file-upload">
 
-                       <span (click)="openPdfFile()" >{{ fileInfo || "Загрузите пожалуйста файл" }} {{ fileSize }}</span>
+                       <span class="file-upload__info" (click)="openPdfFile()">{{ fileInfo || "Загрузите пожалуйста файл" }} {{ fileSize }}</span>
                     
                         <button
                             type="button"
@@ -119,7 +119,10 @@
                 
                 <ng-template #loading>
                     <ng-container *ngIf="loadingProgress$ | async as progress">
-                        <mat-progress-bar mode="determinate" [value]="progressValue"></mat-progress-bar>
+                        <mat-progress-bar
+                            mode="determinate"
+                            [value]="progressValue"
+                        ></mat-progress-bar>
                     </ng-container>
                 </ng-template>
 
