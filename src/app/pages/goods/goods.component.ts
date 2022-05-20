@@ -38,13 +38,13 @@ export class GoodsComponent {
     this.goodsService.getProduct(this.sort);
   }
 
-  get widgetIcon(): string {
-    return this.sort ? 'sort' : 'filter_list';
-  }
-
   submit() {
     this.p = 1;
     let value = this.form.getRawValue();
     this.goodsService.filterProduct(value.brand);
+  }
+
+  get widgetIcon(): string {
+    return this.sort ? 'sort' : 'filter_list';
   }
 }

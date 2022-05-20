@@ -1,9 +1,12 @@
 import { Component, Inject } from '@angular/core';
 import {
+  AbstractControl,
   FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
+  ValidationErrors,
+  ValidatorFn,
   Validators
 } from '@angular/forms';
 
@@ -89,7 +92,7 @@ export class ProductPageComponent {
           images: this.photos,
         }); 
       });
-      
+
       this.loadingProgress$.subscribe(
         value => {
           this.progressValue = Number(value);
@@ -177,6 +180,10 @@ export class ProductPageComponent {
   drop(event: CdkDragDrop<any>) {
     this.photos[event.previousContainer.data.index] = event.container.data.item;
     this.photos[event.container.data.index] = event.previousContainer.data.item;
+
+    this.form.patchValue({
+      images: this.photos,
+    }); 
   }
 
   genImageControl() {

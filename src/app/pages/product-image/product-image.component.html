@@ -6,6 +6,7 @@
         class="image-card no-cover"
         appDropZone
         (onFileDropped)="addImage($event)"
+        [attr.data-index]
     >
         <ng-content></ng-content>
     </div>

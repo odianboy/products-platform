@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { brands, names, document, images } from '../const/product-data.const';
+import { genImage } from '../const/image-data.const';
+import { brands, names, document, image } from '../const/product-data.const';
 import { Product } from '../interfaces/product.interface';
 
 
@@ -19,7 +20,7 @@ export class ProductDataMockService {
       code: this.genNum(100000),
       price: this.genNum(10000),
       document: document,
-      images: images,
+      images: this.genMockImg(),
       isActive: this.genBoolean()
     }
   }
@@ -35,4 +36,21 @@ export class ProductDataMockService {
   genBoolean(): boolean {
     return (Math.floor(Math.random() * 2) === 0);
   }
+
+  genMockImg() {
+    let item = image[ Math.floor(Math.random() * image.length) ];
+
+    const mockPhoto = {
+      name: 'product.jpeg',
+      url: item,
+      size: null,
+      type: null
+    }
+
+    const images: any = [].concat( genImage() as [] );
+    images.splice(0, 1, mockPhoto);
+
+    return images
+  }
+
 }
