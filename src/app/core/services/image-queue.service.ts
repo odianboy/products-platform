@@ -59,13 +59,11 @@ export class ImageQueueService {
         // reader.onload = () => image.url = reader.result;
 
 
-        const file$ = new Observable((sub: Subscriber<any>) => {
+        const file$ = new Observable( (sub: Subscriber<any>) => {
             this.readFile(file, sub);
         });
 
-        file$.subscribe(value => {
-            image.url = value
-        })
+        file$.subscribe(value => image.url = value);
 
         return image;
     }
