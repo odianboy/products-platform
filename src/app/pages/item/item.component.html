@@ -19,7 +19,11 @@
       </p>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button (click)="addBasket(item)" [disabled]="disabledBtn">
+      <button
+        mat-button
+        (click)="addBasket(item)"
+        [disabled]="disabledBtn"
+      >
         <mat-icon>{{ iconItem }}</mat-icon>
         {{ infoButton }}
       </button>

@@ -1,6 +1,6 @@
 import { Directive, Output, EventEmitter, HostListener } from '@angular/core';
-import { fromEvent, map, Observable, take } from 'rxjs';
-import { ISize, ProductImage } from '../interfaces/image.interface';
+import { lastValueFrom } from 'rxjs';
+import { IProductImage } from '../interfaces/image.interface';
 import { ImageQueueService } from '../services/image-queue.service';
 import { ValidationService } from '../services/validation.service';
 
@@ -9,7 +9,7 @@ import { ValidationService } from '../services/validation.service';
 })
 export class DropZoneDirective {
 
-  @Output() onFileDropped = new EventEmitter<ProductImage>();
+  @Output() onFileDropped = new EventEmitter<IProductImage>();
 
   constructor(
     private ImageQueueService: ImageQueueService,
@@ -34,16 +34,8 @@ export class DropZoneDirective {
 
     Array.from(files).forEach( async file => {
 
-      if (this.validService.checkType(file)) {
-        return;
-      }
-
-      if (this.validService.checkSize(file)) {
-        return;
-      }
-
-      if (await this.validService.checkResolution(file)) {
-        return;
+      if (await lastValueFrom(this.validService.syncValidate(file))) {
+        return
       }
 
       let image = this.ImageQueueService.creationImage(file);

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Product } from 'src/app/core/interfaces/product.interface';
+import { IProduct } from 'src/app/core/interfaces/product.interface';
 import { GoodsService } from 'src/app/core/services/goods.service';
 
 import { BasketService } from 'src/app/core/services/basket.service';
@@ -13,7 +13,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class GoodsComponent {
 
-  goods$: Observable<Product[]>;
+  goods$: Observable<IProduct[]>;
   sort: Boolean = false;
   form: FormGroup;
 
@@ -28,7 +28,7 @@ export class GoodsComponent {
       this.goods$ = this.goodsService.goods$;
   }
 
-  addItemBasket(product: Product): void {
+  addItemBasket(product: IProduct): void {
     this.basketService.addBasket(product);
   }
 

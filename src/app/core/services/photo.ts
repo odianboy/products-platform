@@ -1,9 +1,9 @@
-import { ProductImage } from '../interfaces/image.interface';
+import { IProductImage } from '../interfaces/image.interface';
 
 export class Photo {
-    image: ProductImage | string
+    image: IProductImage | string | null
     
-    constructor(image: ProductImage | string) {
+    constructor(image: IProductImage | string) {
         this.image = image;
     }
 }

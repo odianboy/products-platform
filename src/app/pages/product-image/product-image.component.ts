@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { ProductImage } from 'src/app/core/interfaces/image.interface';
+import { IProductImage } from 'src/app/core/interfaces/image.interface';
 
 @Component({
   selector: 'app-product-image',
@@ -9,18 +9,18 @@ import { ProductImage } from 'src/app/core/interfaces/image.interface';
 })
 export class ProductImageComponent {
 
-  @Input() image!: ProductImage;
+  @Input() image!: IProductImage;
 
-  @Output() onAdd = new EventEmitter<ProductImage>();
-  @Output() onDel = new EventEmitter<ProductImage>();
+  @Output() onAdd = new EventEmitter<IProductImage>();
+  @Output() onDel = new EventEmitter<IProductImage>();
 
   constructor() {}
 
-  addImage(image: ProductImage): void {
+  addImage(image: IProductImage): void {
     this.onAdd.emit(image);
   }
 
-  delImage(image: ProductImage): void {
+  delImage(image: IProductImage): void {
     this.onDel.emit(image);
   }
 

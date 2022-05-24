@@ -1,9 +1,8 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, fromEvent, map, Observable, Subscriber, take, tap } from 'rxjs';
 
 import { genImage } from '../const/image-data.const';
-import { ProductImage } from '../interfaces/image.interface';
+import { IProductImage } from '../interfaces/image.interface';
 import { Photo } from './photo';
 
 @Injectable({
@@ -11,7 +10,7 @@ import { Photo } from './photo';
 })
 export class ImageQueueService {
 
-    images$: Observable<ProductImage[]>;
+    images$: Observable<IProductImage[]>;
     private _images$: BehaviorSubject<any[]>;
 
     constructor() {
@@ -19,7 +18,7 @@ export class ImageQueueService {
         this.images$ = this._images$.asObservable();
     }
 
-    addImage(image: ProductImage): void {
+    addImage(image: IProductImage): void {
         const images = this._images$.getValue();
         let previousIndex = 0;
 
@@ -33,7 +32,7 @@ export class ImageQueueService {
         this._images$.next(images);
     }
 
-    delImage(image: ProductImage): void {
+    delImage(image: IProductImage): void {
         const images = this._images$.getValue();
         let indexProduct = images.indexOf(image);
 
@@ -44,32 +43,40 @@ export class ImageQueueService {
     }
 
     resetImage(): void {
-        this._images$.next(genImage());
+        this._images$.next( genImage() );
     }
 
-    creationImage(file: File): ProductImage {
+    creationImage(file: File): IProductImage {
 
-        const blob2Base64 = (blob: Blob): Promise<string> => {
-            
-            return new Promise<string> ( (resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(blob);
-                reader.onload = () => resolve( reader.result!.toString() );
-                reader.onerror = error => reject(error);
-            });
-        }
-
-        let image: ProductImage = {
+        let image: IProductImage = {
             name: file.name,
-            url: '',
             size: file.size,
             type: file.type
         }
 
-        blob2Base64(file).then(
-            imageUrl => image.url = imageUrl
-        );
-        
+        // const reader = new FileReader();
+        // reader.readAsDataURL(file);
+        // reader.onload = () => image.url = reader.result;
+
+
+        const file$ = new Observable((sub: Subscriber<any>) => {
+            this.readFile(file, sub);
+        });
+
+        file$.subscribe(value => {
+            image.url = value
+        })
+
         return image;
+    }
+
+    readFile(file: File, sub: Subscriber<any>) {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+
+        fileReader.onload = () => {
+            sub.next(fileReader.result);
+            sub.complete();
+        }
     }
 }

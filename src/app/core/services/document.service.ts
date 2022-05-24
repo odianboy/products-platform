@@ -5,10 +5,10 @@ import { Injectable } from '@angular/core';
 })
 export class DocumentService {
 
-constructor() { }
+  constructor() { }
 
-getSize(file: File): string {
-  return Math.ceil(file.size / 1024 / 1024 ) + 'МБ';
-}
+  getSize(file: File): string {
+    return Math.ceil(file.size / 1024 / 1024 ) + 'МБ';
+  }
 
 }

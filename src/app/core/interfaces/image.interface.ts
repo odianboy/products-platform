@@ -1,11 +1,6 @@
-export interface ProductImage {
+export interface IProductImage {
     name: string;
-    url: string;
+    url?: ArrayBuffer | string | null;
     size: number;
     type: string;
-}
-
-export interface ISize {
-    width: number;
-    height: number;
 }

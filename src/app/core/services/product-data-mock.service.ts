@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { genImage } from '../const/image-data.const';
 import { brands, names, document, image } from '../const/product-data.const';
-import { Product } from '../interfaces/product.interface';
+import { IProduct } from '../interfaces/product.interface';
 
 
 @Injectable({
@@ -9,11 +9,11 @@ import { Product } from '../interfaces/product.interface';
 })
 export class ProductDataMockService {
 
-  generateRandomProducts(): Product[] {
+  generateRandomProducts(): IProduct[] {
     return Array.from({length: 40}, () => this.randomProduct());
   }
 
-  randomProduct(): Product {
+  randomProduct(): IProduct {
     return {
       name: this.randomProperty(names),
       brand: this.randomProperty(brands),

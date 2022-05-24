@@ -1,8 +1,7 @@
-import { ChangeDetectorRef, Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fromEvent, map, Observable, take } from 'rxjs';
 import { ValidDialogComponent } from 'src/app/pages/valid-dialog/valid-dialog.component';
-import { ISize } from '../interfaces/image.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -23,21 +22,19 @@ export class ValidationService {
     return fileSize > maxSizeFile;
   }
 
-  async checkResolution(file: File): Promise<boolean> {
+  checkResolution(image: HTMLImageElement): boolean {
     const maxResolution = 1000;
 
-    let resolution = await this.getImgSize(URL.createObjectURL(file)).toPromise() as ISize;
-    
-    if (resolution.width > maxResolution || resolution.height > maxResolution) {
+    if (image.width > maxResolution || image.height > maxResolution) {
       const message =
       `
         Фото превышает максимальное разрешение ${maxResolution}x${maxResolution}.
-        Текущие размеры: ${resolution.width}x${resolution.height}.
+        Текущие размеры: ${image.width}x${image.height}.
       `;
       this.openDialog(message);
     }
 
-    return resolution.width > maxResolution || resolution.height > maxResolution;
+    return image.width > maxResolution || image.height > maxResolution;
   }
 
   checkType(file: File): boolean {
@@ -58,19 +55,25 @@ export class ValidationService {
     })
   }
 
-  getImgSize(imageSrc: string): Observable<ISize> {
+  syncValidate(file: File): Observable<boolean> {
+    const image = this.loadImage(file);
 
-    let mapLoadedImage = (event: any): ISize => ({
-      width: event.target.width,
-      height: event.target.height
-    })
-  
-    let image = new Image();
+    return fromEvent(image, 'load').pipe(
+      map( () => this.validate(file, image) ),
+      take(1)
+    )
+  }
+
+  loadImage(file: File): HTMLImageElement {
+    const imageSrc = URL.createObjectURL(file);
+    const image = new Image();
     image.src = imageSrc;
 
-    let $loadedImg = fromEvent(image, 'load').pipe(take(1), map(mapLoadedImage));
+    return image;
+  }
 
-    return $loadedImg;
+  validate(file: File, image: HTMLImageElement): boolean {
+    return this.checkSize(file) || this.checkType(file) || this.checkResolution(image);
   }
 
 }

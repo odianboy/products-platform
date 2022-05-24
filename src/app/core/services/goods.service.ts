@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { Product } from '../interfaces/product.interface';
+import { IProduct } from '../interfaces/product.interface';
 import { ProductDataMockService } from './product-data-mock.service';
 
 @Injectable({
@@ -8,9 +8,9 @@ import { ProductDataMockService } from './product-data-mock.service';
 })
 export class GoodsService {
 
-  goods$: Observable<Product[]>;
-  private _goods$: BehaviorSubject<Product[]>;
-  product: Product[];
+  goods$: Observable<IProduct[]>;
+  private _goods$: BehaviorSubject<IProduct[]>;
+  product: IProduct[];
 
   constructor(private mockDataService: ProductDataMockService) {
     this._goods$ = new BehaviorSubject( this.mockDataService.generateRandomProducts() );
@@ -23,13 +23,13 @@ export class GoodsService {
     goods.sort( (a, b) => sort ? (a.price) - (b.price) : (b.price) - (a.price) );
   }
 
-  getProductByCode(code: number): Observable<Product> {
+  getProductByCode(code: number): Observable<IProduct> {
     
     let product = this.product.find( value => value.code === code );
-    return of( product as Product);
+    return of( product as IProduct);
   }
 
-  addProduct(product: Product): void {
+  addProduct(product: IProduct): void {
     const goods = this._goods$.getValue();
     goods.unshift(product);
 

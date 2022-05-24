@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { noImage } from 'src/app/core/const/product-data.const';
-import { Product } from 'src/app/core/interfaces/product.interface';
+import { IProduct } from 'src/app/core/interfaces/product.interface';
 
 @Component({
   selector: 'app-item',
@@ -12,27 +12,27 @@ export class ItemComponent {
 
   disabledBtn: boolean;
 
-  @Input() item: Product;
-  @Output() onBasket: EventEmitter<Product>;
+  @Input() item: IProduct;
+  @Output() onBasket: EventEmitter<IProduct>;
 
   constructor(private router: Router) {
-    this.item = {} as Product;
-    this.onBasket = new EventEmitter<Product>();
+    this.item = {} as IProduct;
+    this.onBasket = new EventEmitter<IProduct>();
     this.disabledBtn = false;
   }
 
-  addBasket(item: Product): void {
+  addBasket(item: IProduct): void {
     this.disabledBtn = true;
     this.onBasket.emit(item);
   }
 
-  goToProductPage(item: Product): void {
+  goToProductPage(item: IProduct): void {
     const productCode = item ? item.code : null;
 
     this.router.navigate(['/product', productCode]);
   }
 
-  public get imageProduct(): string {
+  public get imageProduct(): ArrayBuffer | string {
 
     for (let image of this.item.images) {
       if(image.url) {

@@ -1,8 +1,8 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, Subscription, take, tap } from 'rxjs';
-import { Product } from 'src/app/core/interfaces/product.interface';
+import { Observable } from 'rxjs';
+import { IProduct } from 'src/app/core/interfaces/product.interface';
 import { BasketService } from 'src/app/core/services/basket.service';
 
 
@@ -13,8 +13,8 @@ import { BasketService } from 'src/app/core/services/basket.service';
 })
 export class BasketComponent {
 
-  basket$: Observable<Product[]>;
-  dataBasket: Product[];
+  basket$: Observable<IProduct[]>;
+  dataBasket: IProduct[];
   counterControl: FormControl;
 
   constructor(
@@ -22,7 +22,7 @@ export class BasketComponent {
       private router: Router
     ) {
     this.basket$ = this.basketService.basket$;
-    this.dataBasket = [] as Product[];
+    this.dataBasket = [] as IProduct[];
 
     this.basket$.subscribe( (product) => {
       this.dataBasket = product;
@@ -36,16 +36,16 @@ export class BasketComponent {
   getTotalCost() {
     return this.dataBasket.map(t => +t.price).reduce( (acc, value) => acc + value, 0);
   }
-  goToProductPage(product: Product): void {
+  goToProductPage(product: IProduct): void {
 
     this.router.navigate(['/product', product.code])
   }
 
-  delProdutBasket(product: Product): void {
+  delProdutBasket(product: IProduct): void {
     this.basketService.delBasket(product);
   }
 
-  counter(value: any, product: Product) {
+  counter(value: any, product: IProduct) {
 
    let count = +value.target.value
     

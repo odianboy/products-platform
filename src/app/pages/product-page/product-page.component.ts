@@ -1,12 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import {
-  AbstractControl,
-  FormArray,
   FormBuilder,
-  FormControl,
   FormGroup,
-  ValidationErrors,
-  ValidatorFn,
   Validators
 } from '@angular/forms';
 
@@ -18,12 +13,12 @@ import {
   share,
   Subject,
   switchMap,
-  take,
-  tap 
+  firstValueFrom,
+  lastValueFrom
 } from 'rxjs';
 
-import { Product } from 'src/app/core/interfaces/product.interface';
-import { ProductImage } from 'src/app/core/interfaces/image.interface';
+import { IProduct } from 'src/app/core/interfaces/product.interface';
+import { IProductImage } from 'src/app/core/interfaces/image.interface';
 import { Photo } from 'src/app/core/services/photo';
 
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
@@ -42,15 +37,15 @@ import { ProductDataMockService } from 'src/app/core/services/product-data-mock.
   styleUrls: ['./product-page.component.scss']
 })
 export class ProductPageComponent {
-  images$: Observable<ProductImage[]>;
+  images$: Observable<IProductImage[]>;
   form: FormGroup;
-  photos: ProductImage[];
+  photos: IProductImage[];
 
   fileName: string;
   fileSize: string;
 
   progressValue: number;
-  productData!: Product;
+  productData!: IProduct;
 
   document!: File;
 
@@ -75,12 +70,13 @@ export class ProductPageComponent {
     private goodsService: GoodsService,
     private mockService: ProductDataMockService,
     private docService: DocumentService,
-    private activetedRoute: ActivatedRoute,
+    private route: ActivatedRoute,
     private fb: FormBuilder,
+
     ) {
       this.images$ = this.ImageQueueService.images$;
       this.form = this.formGroupInit();
-      this.photos = [] as ProductImage[];
+      this.photos = [] as IProductImage[];
       this.progressValue = 0;
       this.fileName = '';
       this.fileSize = '';
@@ -93,20 +89,15 @@ export class ProductPageComponent {
         }); 
       });
 
+      this.productData = route.snapshot.data['product'];
+      this.form.patchValue(this.productData);
+
       this.loadingProgress$.subscribe(
         value => {
           this.progressValue = Number(value);
       }
     );
 
-    this.activetedRoute.data.pipe(
-      map(data => data['product']),
-      tap(data => {
-        this.productData = data ? data : null;
-        this.form.patchValue(data)
-      }),
-      take(1)
-      ).subscribe();
   }
 
   formGroupInit(): FormGroup {
@@ -123,7 +114,7 @@ export class ProductPageComponent {
     })
   }
 
-  addImage(image: ProductImage): void {
+  addImage(image: IProductImage): void {
     this.ImageQueueService.addImage(image);
   }
 
@@ -132,12 +123,8 @@ export class ProductPageComponent {
 
     if (file) {
 
-      if (this.validService.checkSize(file)) {
-        return;
-      }
-
-      if (await this.validService.checkResolution(file)) {
-        return;
+      if (await lastValueFrom(this.validService.syncValidate(file))) {
+        return
       }
 
       let image = this.ImageQueueService.creationImage(file);
@@ -145,7 +132,7 @@ export class ProductPageComponent {
     }
   }
 
-  delImageProduct(image: ProductImage): void {
+  delImageProduct(image: IProductImage): void {
     this.ImageQueueService.delImage(image);
   }
 
@@ -168,7 +155,7 @@ export class ProductPageComponent {
     this.form.patchValue({
       code: this.mockService.genNum(100000)}
     );
-    const productData: Product = this.form.getRawValue();
+    const productData: IProduct = this.form.getRawValue();
     this.goodsService.addProduct(productData);
 
     console.log(this.form.getRawValue());

@@ -1,28 +1,28 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { Product } from '../interfaces/product.interface';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { IProduct } from '../interfaces/product.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BasketService {
 
-  basket$: Observable<Product[]>;
-  private _basket$: BehaviorSubject<Product[]>;
+  basket$: Observable<IProduct[]>;
+  private _basket$: BehaviorSubject<IProduct[]>;
 
   constructor() {
-    this._basket$ = new BehaviorSubject([] as Product[]);
+    this._basket$ = new BehaviorSubject([] as IProduct[]);
     this.basket$ = this._basket$.asObservable();
   }
 
-  addBasket(product: Product): void {
+  addBasket(product: IProduct): void {
     const basket = this._basket$.getValue();
     basket.unshift(product);
     
     this._basket$.next(basket);
   }
 
-  delBasket(product: Product): void {
+  delBasket(product: IProduct): void {
     const basket = this._basket$.getValue();
     let products = basket.filter(value => value !== product);
     this._basket$.next(products);
