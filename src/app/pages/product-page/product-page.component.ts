@@ -13,7 +13,6 @@ import {
   share,
   Subject,
   switchMap,
-  firstValueFrom,
   lastValueFrom
 } from 'rxjs';
 
@@ -30,6 +29,8 @@ import { LoadingService } from 'src/app/core/services/loading.service';
 import { ImageQueueService } from 'src/app/core/services/image-queue.service';
 import { DocumentService } from 'src/app/core/services/document.service';
 import { ProductDataMockService } from 'src/app/core/services/product-data-mock.service';
+
+// import { SortablejsOptions } from 'ngx-sortablejs';
 
 @Component({
   selector: 'app-product-page',
@@ -97,7 +98,6 @@ export class ProductPageComponent {
           this.progressValue = Number(value);
       }
     );
-
   }
 
   formGroupInit(): FormGroup {
@@ -194,4 +194,14 @@ export class ProductPageComponent {
   get disabledBtn(): boolean {
     return this.productData ? true : false;
   }
+
+  options: any = {
+    invertSwap: false,
+    animation: 150,
+    onUpdate: (event: CustomEvent) => {
+      this.form.patchValue({
+        images: this.photos,
+      }); 
+    },
+ };
 }

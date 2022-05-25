@@ -48,7 +48,7 @@ export class ImageQueueService {
 
     creationImage(file: File): IProductImage {
 
-        let image: IProductImage = {
+        const image: IProductImage = {
             name: file.name,
             size: file.size,
             type: file.type
@@ -57,7 +57,6 @@ export class ImageQueueService {
         // const reader = new FileReader();
         // reader.readAsDataURL(file);
         // reader.onload = () => image.url = reader.result;
-
 
         const file$ = new Observable( (sub: Subscriber<any>) => {
             this.readFile(file, sub);

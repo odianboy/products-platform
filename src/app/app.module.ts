@@ -43,6 +43,10 @@ import { NumberedPaginationModule } from './shared/modules/numbered-pagination/n
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ValidDialogComponent } from './pages/valid-dialog/valid-dialog.component';
 
+import { KtdGridModule } from '@katoid/angular-grid-layout';
+import { SortablejsModule } from 'ngx-sortablejs';
+
+
 const maskConfig: Partial<IConfig> = {
   validation: false,
 };
@@ -86,7 +90,9 @@ const maskConfig: Partial<IConfig> = {
     MatMenuModule,
     NumberedPaginationModule,
     NgxPaginationModule,
-    MatDialogModule
+    MatDialogModule,
+    KtdGridModule,
+    SortablejsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
