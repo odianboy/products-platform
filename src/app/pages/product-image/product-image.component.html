@@ -1,4 +1,4 @@
-<div class="image" *ngIf="!image.url; else cover">
+<div class="image" *ngIf="!image?.url; else cover">
     <div
         (dragover)="imageOver($event)"
         (dragleave)="imageLeave($event)"
@@ -6,7 +6,6 @@
         class="image-card no-cover"
         appDropZone
         (onFileDropped)="addImage($event)"
-        [attr.data-index]
     >
         <ng-content></ng-content>
     </div>

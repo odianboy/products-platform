@@ -39,13 +39,8 @@ import { GoodsComponent } from './pages/goods/goods.component';
 import { ItemComponent } from './pages/item/item.component';
 import { BasketComponent } from './pages/basket/basket.component';
 import { MatSortModule } from '@angular/material/sort';
-import { NumberedPaginationModule } from './shared/modules/numbered-pagination/numbered-pagination.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ValidDialogComponent } from './pages/valid-dialog/valid-dialog.component';
-
-import { KtdGridModule } from '@katoid/angular-grid-layout';
-import { SortablejsModule } from 'ngx-sortablejs';
-
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -60,7 +55,7 @@ const maskConfig: Partial<IConfig> = {
     GoodsComponent,
     ItemComponent,
     BasketComponent,
-    ValidDialogComponent
+    ValidDialogComponent,
    ],
   imports: [
     BrowserModule,
@@ -88,11 +83,8 @@ const maskConfig: Partial<IConfig> = {
     MatTableModule,
     MatSortModule,
     MatMenuModule,
-    NumberedPaginationModule,
     NgxPaginationModule,
     MatDialogModule,
-    KtdGridModule,
-    SortablejsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -41,67 +41,20 @@
             </mat-tab>
             <mat-tab label="Загрузка фотографий">
 
-                <!-- <div *ngIf="images$ | async as images">
-
-                    <div
-                        class="product__image"
-                        cdkDropListGroup
-                    >
-                        <ng-container *ngFor="let image of (productData ? productData.images : photos); index as idx;">
-                            <div
-                                cdkDropList
-                                (cdkDropListDropped)="drop($event)"
-                                cdkDropListOrientation="horizontal"
-                                [cdkDropListData]="{ item: image, index: idx }"
-                            >
-                                <app-product-image
-                                    [image]="image"
-                                    (onAdd)="addImage($event)"
-                                    (onDel)="delImageProduct($event)"
-                                    cdkDrag
-                                    [cdkDragDisabled]="disabledBtn"
-                                >
-                                    {{ idx + 1 }}
-                                    <div *cdkDragPlaceholder></div>
-                                </app-product-image>
-                            </div>
-                        </ng-container>
-                    </div>
-                    
-                    <button
-                        mat-raised-button
-                        color="accent"
-                        class="product__button_add"
-                        type="button"
-                        [disabled]="disabledBtn"
-                    >
-                        <mat-icon>file_upload</mat-icon>
-                        Добавить файлы
-                        <input
-                            class="product__input"
-                            type="file"
-                            accept="image/jpeg"
-                            (change)="addImageProduct($event)"
-                            [disabled]="disabledBtn"
-                        >
-                    </button>
-                    <span>Не более 10 фото (размер каждого - до 1 МБ)</span>
-                </div> -->
-
                 <div *ngIf="images$ | async as images">
 
-                    <div
-                        class="product__image"
-                        [sortablejs]="photos" 
-                        [sortablejsOptions]="options"
-                    >
-                    
-                        <ng-container *ngFor="let image of (productData ? productData.images : photos); index as idx;">
+                    <div class="product__image">
+                        <ng-container *ngFor="let image of (productData ? productData.images : photos); index as idx;" >
                             <div>
                                 <app-product-image
                                     [image]="image"
                                     (onAdd)="addImage($event)"
                                     (onDel)="delImageProduct($event)"
+                                    
+                                    appDragDropSwap
+                                    [elemPosition]="idx"
+                                    [list]="photos"
+                                    (updatedList)="returnUpdatedList($event)"
                                 >
                                     {{ idx + 1 }}
                                 </app-product-image>
@@ -141,7 +94,12 @@
 
                     <div class="file-upload">
 
-                       <span class="file-upload__info" (click)="openPdfFile()">{{ fileInfo || "Загрузите пожалуйста файл" }} {{ fileSize }}</span>
+                        <span
+                            class="file-upload__info"
+                            (click)="openPdfFile()"
+                        >
+                        {{ fileInfo || "Загрузите пожалуйста файл" }} {{ fileSize }}
+                        </span>
                     
                         <button
                             type="button"

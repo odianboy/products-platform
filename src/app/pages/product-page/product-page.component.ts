@@ -30,8 +30,6 @@ import { ImageQueueService } from 'src/app/core/services/image-queue.service';
 import { DocumentService } from 'src/app/core/services/document.service';
 import { ProductDataMockService } from 'src/app/core/services/product-data-mock.service';
 
-// import { SortablejsOptions } from 'ngx-sortablejs';
-
 @Component({
   selector: 'app-product-page',
   templateUrl: './product-page.component.html',
@@ -164,15 +162,6 @@ export class ProductPageComponent {
     this.ImageQueueService.resetImage();
   }
 
-  drop(event: CdkDragDrop<any>) {
-    this.photos[event.previousContainer.data.index] = event.container.data.item;
-    this.photos[event.container.data.index] = event.previousContainer.data.item;
-
-    this.form.patchValue({
-      images: this.photos,
-    }); 
-  }
-
   genImageControl() {
     return Array.from({length: 10}, () => this.fb.control(new Photo('')));
   }
@@ -195,13 +184,11 @@ export class ProductPageComponent {
     return this.productData ? true : false;
   }
 
-  options: any = {
-    invertSwap: false,
-    animation: 150,
-    onUpdate: (event: CustomEvent) => {
-      this.form.patchValue({
-        images: this.photos,
-      }); 
-    },
- };
+  returnUpdatedList(data: IProductImage[]) {
+    this.photos = data;
+
+    this.form.patchValue({
+      images: this.photos
+    }); 
+}
 }

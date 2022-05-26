@@ -16,30 +16,32 @@ export class DropZoneDirective {
     private validService: ValidationService
   ) { }
 
-  @HostListener('dragover', ['$event']) onDragOver(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
+  @HostListener('dragover', ['$event'])
+    onDragOver(event: DragEvent) {
+      event.preventDefault();
+      event.stopPropagation();
   }
 
-  @HostListener('dragleave', ['$event']) public onDragLeave(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
+  @HostListener('dragleave', ['$event'])
+    onDragLeave(event: DragEvent) {
+      event.preventDefault();
+      event.stopPropagation();
   }
 
-  @HostListener('drop', ['$event']) public ondrop(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
+  @HostListener('drop', ['$event'])
+    onDrop(event: DragEvent) {
+      event.preventDefault();
+      
+      const files = event.dataTransfer!.files;
 
-    const files = event.dataTransfer!.files;
+      Array.from(files).forEach( async file => {
 
-    Array.from(files).forEach( async file => {
+        if (await lastValueFrom(this.validService.syncValidate(file))) {
+          return
+        }
 
-      if (await lastValueFrom(this.validService.syncValidate(file))) {
-        return
-      }
-
-      let image = this.ImageQueueService.creationImage(file);
-      this.onFileDropped.emit(image);
-    });
+        let image = this.ImageQueueService.creationImage(file);
+        this.onFileDropped.emit(image);
+      });
   }
 }
