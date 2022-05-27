@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { IProduct } from 'src/app/core/interfaces/product.interface';
 import { BasketService } from 'src/app/core/services/basket.service';
 
-
 @Component({
   selector: 'app-basket',
   templateUrl: './basket.component.html',
@@ -19,7 +18,7 @@ export class BasketComponent {
 
   constructor(
       private basketService: BasketService,
-      private router: Router
+      private router: Router,
     ) {
     this.basket$ = this.basketService.basket$;
     this.dataBasket = [] as IProduct[];

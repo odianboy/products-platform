@@ -6,6 +6,11 @@ import { GoodsService } from 'src/app/core/services/goods.service';
 import { BasketService } from 'src/app/core/services/basket.service';
 import { FormControl, FormGroup } from '@angular/forms';
 
+import { Store, select } from '@ngrx/store';
+import { IAppState } from 'src/app/core/store/state/app.state';
+import { selectProductList } from 'src/app/core/store/selectors/product.selector';
+import { GetProducts } from 'src/app/core/store/actions/product.action';
+
 @Component({
   selector: 'app-goods',
   templateUrl: './goods.component.html',
@@ -19,13 +24,23 @@ export class GoodsComponent {
 
   p: number = 1;
 
+  basketTest$ = this._store.pipe(select(selectProductList))
+
   constructor(
     private goodsService: GoodsService,
-    private basketService: BasketService) {
+    private basketService: BasketService,
+    private _store: Store<IAppState>
+    ) {
       this.form = new FormGroup({
         brand: new FormControl(true),
       })
       this.goods$ = this.goodsService.goods$;
+
+      // this._store.dispatch(new GetProducts())
+
+      // this.basketTest$.subscribe(value => {
+      //   console.log('це стор', value)
+      // })
   }
 
   addItemBasket(product: IProduct): void {
