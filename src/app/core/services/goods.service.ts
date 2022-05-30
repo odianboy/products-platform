@@ -29,11 +29,14 @@ export class GoodsService {
     return of( product as IProduct);
   }
 
-  addProduct(product: IProduct): void {
+  addProduct(product: IProduct): Observable<IProduct[]> {
+    console.log(product);
+    
     const goods = this._goods$.getValue();
     goods.unshift(product);
-
     this._goods$.next(goods);
+
+    return this.goods$
   }
 
   filterProduct(brand: Boolean): void {

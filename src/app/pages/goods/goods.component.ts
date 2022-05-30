@@ -7,11 +7,9 @@ import { BasketService } from 'src/app/core/services/basket.service';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { Store, select } from '@ngrx/store';
-import { selectAllProducts } from 'src/app/core/state/product/product.selectors';
-import { loadProducts } from 'src/app/core/state/product/product.actions';
-// import { IAppState } from 'src/app/core/state/app.state';
-// import { selectProductList } from 'src/app/core/state/product/product.selectors';
-// import { GetProducts } from 'src/app/core/state/product/product.actions';
+import { IAppState } from '../../core/store/state/app.state';
+import { selectProductList } from '../../core/store/selectors/product.selector';
+import { GetProducts } from '../../core/store/actions/product.actions';
 
 @Component({
   selector: 'app-goods',
@@ -20,36 +18,25 @@ import { loadProducts } from 'src/app/core/state/product/product.actions';
 })
 export class GoodsComponent implements OnInit {
 
-  goods$: Observable<IProduct[]>;
   sort: Boolean = false;
   form: FormGroup;
 
   p: number = 1;
 
-  // basketTest$ = this._store.pipe(select(selectProductList))
-  
-  public allProducts$ = this.store.select(selectAllProducts)
+  goods$: Observable<IProduct[] | null>  = this._store.pipe(select(selectProductList));
 
   constructor(
     private goodsService: GoodsService,
     private basketService: BasketService,
-    // private _store: Store<IAppState>
-    private store: Store
+    private _store: Store<IAppState>
     ) {
       this.form = new FormGroup({
         brand: new FormControl(true),
       })
-      this.goods$ = this.goodsService.goods$;
-
-      // this._store.dispatch(new GetProducts())
-
-      // this.basketTest$.subscribe(value => {
-      //   console.log('це стор', value)
-      // })
   }
 
   ngOnInit(): void {
-    this.store.dispatch(loadProducts())
+    this._store.dispatch(new GetProducts());
   }
 
   addItemBasket(product: IProduct): void {

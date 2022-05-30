@@ -29,6 +29,9 @@ import { LoadingService } from 'src/app/core/services/loading.service';
 import { ImageQueueService } from 'src/app/core/services/image-queue.service';
 import { DocumentService } from 'src/app/core/services/document.service';
 import { ProductDataMockService } from 'src/app/core/services/product-data-mock.service';
+import { Store } from '@ngrx/store';
+import { IAppState } from 'src/app/core/store/state/app.state';
+import { AddProduct, GetProducts } from 'src/app/core/store/actions/product.actions';
 
 @Component({
   selector: 'app-product-page',
@@ -71,6 +74,7 @@ export class ProductPageComponent {
     private docService: DocumentService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
+    private _store: Store<IAppState>,
 
     ) {
       this.images$ = this.ImageQueueService.images$;
@@ -154,7 +158,9 @@ export class ProductPageComponent {
       code: this.mockService.genNum(100000)}
     );
     const productData: IProduct = this.form.getRawValue();
-    this.goodsService.addProduct(productData);
+    // this.goodsService.addProduct(productData);
+    
+    this._store.dispatch(new AddProduct(productData))
 
     console.log(this.form.getRawValue());
 
