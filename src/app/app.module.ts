@@ -41,6 +41,10 @@ import { BasketComponent } from './pages/basket/basket.component';
 import { MatSortModule } from '@angular/material/sort';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ValidDialogComponent } from './pages/valid-dialog/valid-dialog.component';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment';
+import { EffectsModule } from '@ngrx/effects';
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -85,6 +89,12 @@ const maskConfig: Partial<IConfig> = {
     MatMenuModule,
     NgxPaginationModule,
     MatDialogModule,
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production
+    })
   ],
   providers: [],
   bootstrap: [AppComponent],

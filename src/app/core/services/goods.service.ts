@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { cloneDeep } from 'lodash';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { IProduct } from '../interfaces/product.interface';
 import { ProductDataMockService } from './product-data-mock.service';
@@ -24,23 +25,36 @@ export class GoodsService {
   }
 
   getProductByCode(code: number): Observable<IProduct> {
-    
     let product = this.product.find( value => value.code === code );
     return of( product as IProduct);
   }
 
-  addProduct(product: IProduct): Observable<IProduct[]> {
-    console.log(product);
-    
-    const goods = this._goods$.getValue();
-    goods.unshift(product);
-    this._goods$.next(goods);
+  addProduct(product: IProduct,): Observable<IProduct[]> {
 
-    return this.goods$
+    // console.log(product)
+    const goods = this._goods$.getValue();
+    
+
+    let test = cloneDeep(goods)
+
+    test.unshift(product);
+
+    console.log(test);
+    
+
+    // this._goods$.next(goods);
+
+    return of(test)
   }
 
+  // addProduct(product: IProduct): void {
+  //   const goods = this._goods$.getValue();
+  //   goods.unshift(product);
+
+  //   this._goods$.next(goods);
+  // }
+
   filterProduct(brand: Boolean): void {
-    
     const goods = this._goods$.getValue();
 
     if(!brand) {

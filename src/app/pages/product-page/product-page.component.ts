@@ -4,7 +4,6 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
-
 import {
   distinctUntilChanged,
   filter,
@@ -15,12 +14,10 @@ import {
   switchMap,
   lastValueFrom
 } from 'rxjs';
-
 import { IProduct } from 'src/app/core/interfaces/product.interface';
 import { IProductImage } from 'src/app/core/interfaces/image.interface';
 import { Photo } from 'src/app/core/services/photo';
 
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { ActivatedRoute } from '@angular/router';
 
 import { ValidationService } from 'src/app/core/services/validation.service';
@@ -30,8 +27,7 @@ import { ImageQueueService } from 'src/app/core/services/image-queue.service';
 import { DocumentService } from 'src/app/core/services/document.service';
 import { ProductDataMockService } from 'src/app/core/services/product-data-mock.service';
 import { Store } from '@ngrx/store';
-import { IAppState } from 'src/app/core/store/state/app.state';
-import { AddProduct, GetProducts } from 'src/app/core/store/actions/product.actions';
+import { createProductAction } from 'src/app/core/store/actions/product.action';
 
 @Component({
   selector: 'app-product-page',
@@ -74,8 +70,7 @@ export class ProductPageComponent {
     private docService: DocumentService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private _store: Store<IAppState>,
-
+    private store: Store,
     ) {
       this.images$ = this.ImageQueueService.images$;
       this.form = this.formGroupInit();
@@ -124,7 +119,6 @@ export class ProductPageComponent {
     let file = event.target.files[0];
 
     if (file) {
-
       if (await lastValueFrom(this.validService.syncValidate(file))) {
         return
       }
@@ -159,9 +153,9 @@ export class ProductPageComponent {
     );
     const productData: IProduct = this.form.getRawValue();
     // this.goodsService.addProduct(productData);
-    
-    this._store.dispatch(new AddProduct(productData))
 
+    this.store.dispatch( createProductAction({product: productData}) );
+    
     console.log(this.form.getRawValue());
 
     this.form.reset();
@@ -173,9 +167,7 @@ export class ProductPageComponent {
   }
 
   openPdfFile() {
-
     if (this.document || this.productData?.document) {
-
       const fileURL = URL.createObjectURL(this.document ?? this.productData?.document);
       window.open(fileURL, '_blank');
     }

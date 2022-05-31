@@ -6,10 +6,10 @@ import { GoodsService } from 'src/app/core/services/goods.service';
 import { BasketService } from 'src/app/core/services/basket.service';
 import { FormControl, FormGroup } from '@angular/forms';
 
-import { Store, select } from '@ngrx/store';
-import { IAppState } from '../../core/store/state/app.state';
-import { selectProductList } from '../../core/store/selectors/product.selector';
-import { GetProducts } from '../../core/store/actions/product.actions';
+import { select, Store } from '@ngrx/store';
+import { productAction } from 'src/app/core/store/actions/product.action';
+import { productsSelector } from 'src/app/core/store/selectors/product.select';
+
 
 @Component({
   selector: 'app-goods',
@@ -23,20 +23,21 @@ export class GoodsComponent implements OnInit {
 
   p: number = 1;
 
-  goods$: Observable<IProduct[] | null>  = this._store.pipe(select(selectProductList));
+  goods$: Observable<IProduct[] | null>;
 
   constructor(
     private goodsService: GoodsService,
     private basketService: BasketService,
-    private _store: Store<IAppState>
+    private store: Store
     ) {
-      this.form = new FormGroup({
-        brand: new FormControl(true),
-      })
-  }
+    this.form = new FormGroup({
+      brand: new FormControl(true),
+    })
+    this.goods$ = this.store.pipe(select(productsSelector))
+}
 
   ngOnInit(): void {
-    this._store.dispatch(new GetProducts());
+    this.store.dispatch( productAction() );
   }
 
   addItemBasket(product: IProduct): void {
