@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   Validators
 } from '@angular/forms';
@@ -162,7 +163,7 @@ export class ProductPageComponent {
     this.ImageQueueService.resetImage();
   }
 
-  genImageControl() {
+  genImageControl(): Array<FormControl> {
     return Array.from({length: 10}, () => this.fb.control(new Photo('')));
   }
 
