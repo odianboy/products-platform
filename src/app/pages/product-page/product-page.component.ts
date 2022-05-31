@@ -133,7 +133,7 @@ export class ProductPageComponent {
     this.ImageQueueService.delImage(image);
   }
 
-  addDocument(event: any) {
+  addDocument(event: any): void {
     const file: File = event.target.files[0];
   
     if (file) {
@@ -167,7 +167,7 @@ export class ProductPageComponent {
     return Array.from({length: 10}, () => this.fb.control(new Photo('')));
   }
 
-  openPdfFile() {
+  openPdfFile(): void {
     if (this.document || this.productData?.document) {
       const fileURL = URL.createObjectURL(this.document ?? this.productData?.document);
       window.open(fileURL, '_blank');
@@ -183,7 +183,7 @@ export class ProductPageComponent {
     return this.productData ? true : false;
   }
 
-  returnUpdatedList(data: IProductImage[]) {
+  returnUpdatedList(data: IProductImage[]): void {
     this.photos = data;
 
     this.form.patchValue({
