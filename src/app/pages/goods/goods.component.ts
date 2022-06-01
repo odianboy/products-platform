@@ -7,7 +7,7 @@ import { BasketService } from 'src/app/core/services/basket.service';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { select, Store } from '@ngrx/store';
-import { productAction } from 'src/app/core/store/actions/product.action';
+import { createProductSuccessAction, filterProductAction, productAction, sortProductAction } from 'src/app/core/store/actions/product.action';
 import { productsSelector } from 'src/app/core/store/selectors/product.select';
 
 
@@ -20,7 +20,6 @@ export class GoodsComponent implements OnInit {
 
   sort: Boolean = false;
   form: FormGroup;
-
   p: number = 1;
 
   goods$: Observable<IProduct[] | null>;
@@ -33,7 +32,7 @@ export class GoodsComponent implements OnInit {
     this.form = new FormGroup({
       brand: new FormControl(true),
     })
-    this.goods$ = this.store.pipe(select(productsSelector))
+    this.goods$ = this.store.pipe( select(productsSelector) );
 }
 
   ngOnInit(): void {
@@ -47,13 +46,15 @@ export class GoodsComponent implements OnInit {
   getProduct() {
     this.p = 1;
     this.sort = !this.sort;
-    this.goodsService.getProduct(this.sort);
+    // this.goodsService.getProduct(this.sort);
+    this.store.dispatch( sortProductAction({sort: this.sort}) )
   }
 
   submit() {
     this.p = 1;
     let value = this.form.getRawValue();
-    this.goodsService.filterProduct(value.brand);
+    this.store.dispatch( filterProductAction({ filter: value.brand }) );
+    // this.goodsService.filterProduct(value.brand);
   }
 
   get widgetIcon(): string {

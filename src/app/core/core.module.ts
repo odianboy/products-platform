@@ -9,6 +9,7 @@ import { reducers } from './store/reducers/product.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { ProductEffect } from './store/effects/product.effect';
 
+
 @NgModule({
   declarations: [
     DropZoneDirective,

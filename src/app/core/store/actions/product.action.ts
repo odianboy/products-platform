@@ -23,3 +23,27 @@ export const createProductSuccessAction = createAction(
 )
 
 export const createProductFailureAction = createAction(ActioinTypes.CREATE_PRODUCT_FAILURE);
+
+export const sortProductAction = createAction(
+    ActioinTypes.SORT_PRODUCT,
+    props<{sort: Boolean}>()
+);
+
+export const sortProductSuccessAction = createAction(
+    ActioinTypes.SORT_PRODUCT_SUCCESS,
+    props<{products: IProduct[]}>()
+);
+
+export const sortProductFailureAction = createAction(ActioinTypes.SORT_PRODUCT_FAILURE);
+
+export const filterProductAction = createAction(
+    ActioinTypes.FILTER_PRODUCT,
+    props<{filter: Boolean}>()
+);
+
+export const filterProuctSuccessAction = createAction(
+    ActioinTypes.FILTER_PRODUCT_SUCCESS,
+    props<{products: IProduct[]}>()
+);
+
+export const filterProductFailureAction = createAction(ActioinTypes.FILTER_PRODUCT_FAILURE);
