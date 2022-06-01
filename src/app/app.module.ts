@@ -24,27 +24,25 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
-import { NavigationComponent } from './pages/navigation/navigation.component';
-import { ProductPageComponent } from './pages/product-page/product-page.component';
 
 import { NgxDropzoneModule } from 'ngx-dropzone';
 
 import { NgxMaskModule, IConfig } from 'ngx-mask';
-import { ProductImageComponent } from './pages/product-image/product-image.component';
-
 
 import { CoreModule } from './core/core.module'
 import { HttpClientModule } from '@angular/common/http';
-import { GoodsComponent } from './pages/goods/goods.component';
-import { ItemComponent } from './pages/item/item.component';
-import { BasketComponent } from './pages/basket/basket.component';
 import { MatSortModule } from '@angular/material/sort';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { ValidDialogComponent } from './pages/valid-dialog/valid-dialog.component';
+import { ValidDialogComponent } from './validation/components/valid-dialog.component';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { EffectsModule } from '@ngrx/effects';
+import { BasketModule } from './basket/basket.module';
+import { NavigationModule } from './navigation/navigation.module';
+import { GoodsModule } from './goods/goods.module';
+import { ValidationModule } from './validation/validation.module';
+import { ProductModule } from './product/prodcut.module';
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -53,13 +51,6 @@ const maskConfig: Partial<IConfig> = {
 @NgModule({
   declarations: [	
     AppComponent,
-    NavigationComponent,
-    ProductPageComponent,
-    ProductImageComponent,
-    GoodsComponent,
-    ItemComponent,
-    BasketComponent,
-    ValidDialogComponent,
    ],
   imports: [
     BrowserModule,
@@ -94,9 +85,15 @@ const maskConfig: Partial<IConfig> = {
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production
-    })
+    }),
+    BasketModule,
+    NavigationModule,
+    GoodsModule,
+    ProductModule,
+    ValidationModule
   ],
   providers: [],
   bootstrap: [AppComponent],
+  exports: []
 })
 export class AppModule { }

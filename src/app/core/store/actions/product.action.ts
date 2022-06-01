@@ -47,3 +47,10 @@ export const filterProuctSuccessAction = createAction(
 );
 
 export const filterProductFailureAction = createAction(ActioinTypes.FILTER_PRODUCT_FAILURE);
+
+export const cartAction = createAction(ActioinTypes.CART);
+export const cartSuccessAction = createAction(
+    ActioinTypes.CART_SUCCESS,
+    props<{products: IProduct[]}>()
+)
+export const cartFailureAction = createAction(ActioinTypes.CART_FAILURE);

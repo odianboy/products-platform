@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fromEvent, map, Observable, take } from 'rxjs';
-import { ValidDialogComponent } from 'src/app/pages/valid-dialog/valid-dialog.component';
+import { ValidDialogComponent } from 'src/app/validation/components/valid-dialog.component';
 
 @Injectable({
   providedIn: 'root'

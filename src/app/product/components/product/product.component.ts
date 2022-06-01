@@ -4,9 +4,9 @@ import { noImage } from 'src/app/core/const/product-data.const';
 import { IProduct } from 'src/app/core/interfaces/product.interface';
 
 @Component({
-  selector: 'app-item',
-  templateUrl: './item.component.html',
-  styleUrls: ['./item.component.scss']
+  selector: 'app-product',
+  templateUrl: './product.component.html',
+  styleUrls: ['./product.component.scss']
 })
 export class ItemComponent {
 

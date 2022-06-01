@@ -43,10 +43,10 @@
     
         <div class="goods-content__item" *ngIf="goods$ | async as goods">
             <div  *ngFor="let item of goods | paginate: { itemsPerPage: 4, currentPage: p }">
-                <app-item
+                <app-product
                     [item]="item"
                     (onBasket)="addItemBasket($event)"
-                ></app-item>
+                ></app-product>
             </div>
         </div>
 
