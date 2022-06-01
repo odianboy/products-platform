@@ -29,11 +29,9 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 
-import { CoreModule } from './core/core.module'
 import { HttpClientModule } from '@angular/common/http';
 import { MatSortModule } from '@angular/material/sort';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { ValidDialogComponent } from './validation/components/valid-dialog.component';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
@@ -41,7 +39,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { BasketModule } from './basket/basket.module';
 import { NavigationModule } from './navigation/navigation.module';
 import { GoodsModule } from './goods/goods.module';
-import { ValidationModule } from './validation/validation.module';
 import { ProductModule } from './product/prodcut.module';
 
 const maskConfig: Partial<IConfig> = {
@@ -70,7 +67,6 @@ const maskConfig: Partial<IConfig> = {
     NgxDropzoneModule,
     DragDropModule,
     NgxMaskModule.forRoot(maskConfig),
-    CoreModule,
     MatProgressBarModule,
     HttpClientModule,
     MatCardModule,
@@ -87,10 +83,8 @@ const maskConfig: Partial<IConfig> = {
       logOnly: environment.production
     }),
     BasketModule,
-    NavigationModule,
-    GoodsModule,
     ProductModule,
-    ValidationModule
+    NavigationModule
   ],
   providers: [],
   bootstrap: [AppComponent],

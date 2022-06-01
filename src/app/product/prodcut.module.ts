@@ -7,7 +7,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatMenuModule } from "@angular/material/menu";
-import { ItemComponent } from "./components/product/product.component";
+import { ProductComponent } from "./components/product/product.component";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { ProductPageComponent } from "./components/product-page/product-page.component";
@@ -21,16 +21,14 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { ValidationModule } from "../validation/validation.module";
 import { CoreModule } from "../core/core.module";
 import { ProductImageComponent } from "./components/product-image/product-image.component";
-import { GoodsModule } from "../goods/goods.module";
 
 @NgModule({
-    declarations: [ItemComponent, ProductPageComponent, ProductImageComponent],
+    declarations: [ProductComponent, ProductImageComponent, ProductPageComponent],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
         ReactiveFormsModule,
         NgxPaginationModule,
-        MatCardModule,
         NavigationModule,
         MatMenuModule,
         MatIconModule,
@@ -47,10 +45,7 @@ import { GoodsModule } from "../goods/goods.module";
         MatCardModule,
         ValidationModule,
         CoreModule,
-        GoodsModule
     ],
-    exports: [ItemComponent, ProductPageComponent, ProductImageComponent]
+    exports: [ProductComponent, ProductImageComponent, ProductPageComponent]
 })
-export class ProductModule {
-
-}
+export class ProductModule {}

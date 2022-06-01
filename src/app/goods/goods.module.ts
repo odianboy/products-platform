@@ -29,7 +29,6 @@ import { MatTooltipModule } from "@angular/material/tooltip";
         MatButtonModule,
         MatCheckboxModule,
         MatTooltipModule,
-        ProductModule,
     ],
     exports: [GoodsComponent]
 })

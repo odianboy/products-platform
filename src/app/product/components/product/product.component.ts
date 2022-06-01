@@ -8,7 +8,7 @@ import { IProduct } from 'src/app/core/interfaces/product.interface';
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
 })
-export class ItemComponent {
+export class ProductComponent {
 
   disabledBtn: boolean;
 
