@@ -17,18 +17,18 @@ import {
 } from 'rxjs';
 import { IProduct } from 'src/app/core/interfaces/product.interface';
 import { IProductImage } from 'src/app/core/interfaces/image.interface';
-import { Photo } from 'src/app/core/services/photo';
+import { Photo } from 'src/app/product/services/photo';
 
 import { ActivatedRoute } from '@angular/router';
 
-import { ValidationService } from 'src/app/core/services/validation.service';
-import { GoodsService } from 'src/app/core/services/goods.service';
+import { ValidationService } from 'src/app/product/services/validation.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
-import { ImageQueueService } from 'src/app/core/services/image-queue.service';
+import { ImageQueueService } from 'src/app/product/services/image-queue.service';
 import { DocumentService } from 'src/app/core/services/document.service';
-import { ProductDataMockService } from 'src/app/core/services/product-data-mock.service';
+import { ProductDataMockService } from 'src/app/product/services/product-data-mock.service';
+
 import { Store } from '@ngrx/store';
-import { createProductAction } from 'src/app/core/store/actions/product.action';
+import { createProductAction } from 'src/app/goods/store/actions/goods.action';
 
 @Component({
   selector: 'app-product-page',
@@ -66,7 +66,6 @@ export class ProductPageComponent {
     @Inject(LoadingService) private readonly loadingService: LoadingService,
     private validService: ValidationService,
     private ImageQueueService: ImageQueueService,
-    private goodsService: GoodsService,
     private mockService: ProductDataMockService,
     private docService: DocumentService,
     private route: ActivatedRoute,
@@ -153,8 +152,6 @@ export class ProductPageComponent {
       code: this.mockService.genNum(100000)}
     );
     const productData: IProduct = this.form.getRawValue();
-    // this.goodsService.addProduct(productData);
-
     this.store.dispatch( createProductAction({product: productData}) );
     
     console.log(this.form.getRawValue());
@@ -189,5 +186,5 @@ export class ProductPageComponent {
     this.form.patchValue({
       images: this.photos
     }); 
-}
+  }
 }

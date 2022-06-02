@@ -22,6 +22,11 @@ import { ValidationModule } from "../validation/validation.module";
 import { CoreModule } from "../core/core.module";
 import { ProductImageComponent } from "./components/product-image/product-image.component";
 
+import { StoreModule } from '@ngrx/store';
+import { reducers } from '../goods/store/reducers/goods.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { ProductEffect } from '../goods/store/effects/goods.effect';
+
 @NgModule({
     declarations: [ProductComponent, ProductImageComponent, ProductPageComponent],
     imports: [
@@ -33,7 +38,6 @@ import { ProductImageComponent } from "./components/product-image/product-image.
         MatMenuModule,
         MatIconModule,
         MatButtonModule,
-
         MatToolbarModule,
         MatSidenavModule,
         MatListModule,
@@ -45,6 +49,8 @@ import { ProductImageComponent } from "./components/product-image/product-image.
         MatCardModule,
         ValidationModule,
         CoreModule,
+        StoreModule.forFeature('product', reducers),
+        EffectsModule.forFeature([ProductEffect]),
     ],
     exports: [ProductComponent, ProductImageComponent, ProductPageComponent]
 })

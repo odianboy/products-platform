@@ -19,7 +19,7 @@ export class NavigationComponent {
   }
 
   goToBasket() {
-    this.router.navigate(['basket'])
+    this.router.navigate(['cart'])
   }
 
 }

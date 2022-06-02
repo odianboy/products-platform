@@ -14,6 +14,11 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatTooltipModule } from "@angular/material/tooltip";
 
+import { StoreModule } from '@ngrx/store';
+import { reducers } from '../goods/store/reducers/goods.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { ProductEffect } from '../goods/store/effects/goods.effect';
+
 @NgModule({
     declarations: [GoodsComponent],
     imports: [
@@ -29,9 +34,9 @@ import { MatTooltipModule } from "@angular/material/tooltip";
         MatButtonModule,
         MatCheckboxModule,
         MatTooltipModule,
+        StoreModule.forFeature('goods', reducers),
+        EffectsModule.forFeature([ProductEffect]),
     ],
     exports: [GoodsComponent]
 })
-export class GoodsModule {
-
-}
+export class GoodsModule {}

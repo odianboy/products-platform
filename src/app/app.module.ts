@@ -36,7 +36,7 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { EffectsModule } from '@ngrx/effects';
-import { BasketModule } from './basket/basket.module';
+import { CartModule } from './cart/cart.module';
 import { NavigationModule } from './navigation/navigation.module';
 import { GoodsModule } from './goods/goods.module';
 import { ProductModule } from './product/prodcut.module';
@@ -82,9 +82,10 @@ const maskConfig: Partial<IConfig> = {
       maxAge: 25,
       logOnly: environment.production
     }),
-    BasketModule,
+    CartModule,
     ProductModule,
-    NavigationModule
+    NavigationModule,
+    GoodsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IProduct } from 'src/app/core/interfaces/product.interface';
-import { GoodsService } from 'src/app/core/services/goods.service';
 
-import { BasketService } from 'src/app/core/services/basket.service';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { select, Store } from '@ngrx/store';
-import { createProductSuccessAction, filterProductAction, productAction, sortProductAction } from 'src/app/core/store/actions/product.action';
-import { productsSelector } from 'src/app/core/store/selectors/product.select';
+import { filterGoodsAction, sortGoodsAction } from 'src/app/goods/store/actions/goods.action';
+import { goodsSelector } from 'src/app/goods/store/selectors/goods.select';
+import { createCartAction } from 'src/app/cart/store/actions/cart.action';
 
 
 @Component({
@@ -16,45 +15,35 @@ import { productsSelector } from 'src/app/core/store/selectors/product.select';
   templateUrl: './goods.component.html',
   styleUrls: ['./goods.component.scss']
 })
-export class GoodsComponent implements OnInit {
-
+export class GoodsComponent {
+  
   sort: Boolean = false;
   form: FormGroup;
-  p: number = 1;
+  page: number = 1;
 
-  goods$: Observable<IProduct[] | null>;
+  goods$: Observable<IProduct[]>;
 
-  constructor(
-    private goodsService: GoodsService,
-    private basketService: BasketService,
-    private store: Store
-    ) {
+  constructor(private store: Store) {
     this.form = new FormGroup({
       brand: new FormControl(true),
-    })
-    this.goods$ = this.store.pipe( select(productsSelector) );
+    });
+    this.goods$ = this.store.pipe( select(goodsSelector) );
 }
 
-  ngOnInit(): void {
-    this.store.dispatch( productAction() );
+  addProductCart(product: IProduct): void {
+    this.store.dispatch( createCartAction({product}) );
   }
 
-  addItemBasket(product: IProduct): void {
-    this.basketService.addBasket(product);
-  }
-
-  getProduct() {
-    this.p = 1;
+  getSortGoods() {
+    this.page = 1;
     this.sort = !this.sort;
-    // this.goodsService.getProduct(this.sort);
-    this.store.dispatch( sortProductAction({sort: this.sort}) )
+    this.store.dispatch( sortGoodsAction({sort: this.sort}) )
   }
 
-  submit() {
-    this.p = 1;
+  getFilterGoods() {
+    this.page = 1;
     let value = this.form.getRawValue();
-    this.store.dispatch( filterProductAction({ filter: value.brand }) );
-    // this.goodsService.filterProduct(value.brand);
+    this.store.dispatch( filterGoodsAction({ filter: value.brand }) );
   }
 
   get widgetIcon(): string {

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProductResolver } from './core/services/product.resolver';
-import { BasketComponent } from './basket/components/basket.component';
+import { ProductResolver } from './product/services/product.resolver';
+import { CartComponent } from './cart/components/cart.component';
 import { GoodsComponent } from './goods/components/goods.component';
 import { NavigationComponent } from './navigation/components/navigation.component';
 import { ProductPageComponent } from './product/components/product-page/product-page.component';
@@ -16,7 +16,7 @@ const routes: Routes = [
       product: ProductResolver
     }
   },
-  { path: 'basket', component: BasketComponent },
+  { path: 'cart', component: CartComponent },
   { path: '**', component: NavigationComponent }
 ];
 

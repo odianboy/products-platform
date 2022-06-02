@@ -7,7 +7,7 @@
             color="accent"
             aria-label="Example icon button with a filter list icon"
             matTooltip="Сортировка"
-            (click)="getProduct()"
+            (click)="getSortGoods()"
         >
             <mat-icon>{{ widgetIcon }}</mat-icon>
         </button>
@@ -24,7 +24,7 @@
         </button>
         <mat-menu #menu="matMenu" class="widget">
 
-            <form (click)="$event.stopPropagation()" [formGroup]="form" (ngSubmit)="submit()">
+            <form (click)="$event.stopPropagation()" [formGroup]="form" (ngSubmit)="getFilterGoods()">
                 <div class="widget-title">Бренд:</div>
                 <div class="filter-widget" >
                     <mat-checkbox class="widget-check" formControlName="brand">Nike</mat-checkbox>
@@ -42,16 +42,16 @@
         </div>
     
         <div class="goods-content__item" *ngIf="goods$ | async as goods">
-            <div  *ngFor="let item of goods | paginate: { itemsPerPage: 4, currentPage: p }">
+            <div  *ngFor="let item of goods | paginate: { itemsPerPage: 4, currentPage: page }">
                 <app-product
                     [item]="item"
-                    (onBasket)="addItemBasket($event)"
+                    (onBasket)="addProductCart($event)"
                 ></app-product>
             </div>
         </div>
 
         <pagination-controls
-            (pageChange)="p = $event"
+            (pageChange)="page = $event"
             previousLabel="Предыдущая"
             nextLabel="Следующая"
         ></pagination-controls>

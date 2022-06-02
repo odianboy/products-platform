@@ -1,8 +1,8 @@
 import { Directive, Output, EventEmitter, HostListener } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { IProductImage } from '../interfaces/image.interface';
-import { ImageQueueService } from '../services/image-queue.service';
-import { ValidationService } from '../services/validation.service';
+import { ImageQueueService } from '../../product/services/image-queue.service';
+import { ValidationService } from '../../product/services/validation.service';
 
 @Directive({
   selector: '[appDropZone]'
