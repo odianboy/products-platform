@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IProduct } from 'src/app/core/interfaces/product.interface';
+import { IProduct } from 'src/app/core/types/product.interface';
 
 import { FormControl, FormGroup } from '@angular/forms';
 

@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -13,11 +13,12 @@ import {
   share,
   Subject,
   switchMap,
-  lastValueFrom
+  lastValueFrom,
+  debounceTime
 } from 'rxjs';
-import { IProduct } from 'src/app/core/interfaces/product.interface';
-import { IProductImage } from 'src/app/core/interfaces/image.interface';
-import { Photo } from 'src/app/product/services/photo';
+import { IProduct } from 'src/app/core/types/product.interface';
+import { IProductImage } from 'src/app/core/types/image.interface';
+import { Photo } from 'src/app/product/services/photo-form';
 
 import { ActivatedRoute } from '@angular/router';
 
@@ -27,26 +28,29 @@ import { ImageQueueService } from 'src/app/product/services/image-queue.service'
 import { DocumentService } from 'src/app/core/services/document.service';
 import { ProductDataMockService } from 'src/app/product/services/product-data-mock.service';
 
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { createProductAction } from 'src/app/goods/store/actions/goods.action';
+import { productSelector } from '../../store/selectors/product.selector';
+import { fillProductAction } from '../../store/actions/product.action';
 
 @Component({
   selector: 'app-product-page',
   templateUrl: './product-page.component.html',
   styleUrls: ['./product-page.component.scss']
 })
-export class ProductPageComponent {
+export class ProductPageComponent implements OnInit{
   images$: Observable<IProductImage[]>;
   form: FormGroup;
   photos: IProductImage[];
 
-  fileName: string;
   fileSize: string;
 
   progressValue: number;
-  productData!: IProduct;
+  productDataRoute!: IProduct;
+  product$: Observable<IProduct | null>;
+  product: IProduct;
 
-  document!: File;
+  document: File;
 
   private readonly load$ = new Subject<void>();
 
@@ -57,7 +61,7 @@ export class ProductPageComponent {
 
   readonly result$ = this.response$.pipe(
     map(response => (typeof response === "string" ? response : null)),
-    distinctUntilChanged()
+    distinctUntilChanged(),
   );
 
   readonly loadingProgress$: Observable<number | unknown> = this.response$.pipe(filter(Number.isFinite));
@@ -75,27 +79,50 @@ export class ProductPageComponent {
       this.images$ = this.ImageQueueService.images$;
       this.form = this.formGroupInit();
       this.photos = [] as IProductImage[];
+      this.document = {} as File;
+      this.product = {} as IProduct;
       this.progressValue = 0;
-      this.fileName = '';
       this.fileSize = '';
+      this.product$ = this.store.pipe( select(productSelector) );
 
       this.images$.subscribe(value => {
-        this.photos = value
+        this.photos = value;
 
         this.form.patchValue({
           images: this.photos,
-        }); 
+        });
       });
 
-      this.productData = route.snapshot.data['product'];
-      this.form.patchValue(this.productData);
+      this.productDataRoute = route.snapshot.data['product'];
+      this.form.patchValue(this.productDataRoute);
 
       this.loadingProgress$.subscribe(
         value => {
           this.progressValue = Number(value);
-      }
-    );
+        }
+      );
+
+      this.form.valueChanges.pipe(
+        debounceTime(1000),
+      ).subscribe(
+        value => {
+          this.store.dispatch( fillProductAction({product: value}) )
+        }
+      );
+    }
+
+  ngOnInit(): void {
+
+    if (!this.productDataRoute) {
+      this.product$.subscribe(
+        value => {
+          this.product = value as IProduct
+        }
+      );
+      this.form.patchValue(this.product as IProduct);
+    }
   }
+
 
   formGroupInit(): FormGroup {
     return this.fb.group({
@@ -137,7 +164,6 @@ export class ProductPageComponent {
   
     if (file) {
       this.load$.next();
-      this.fileName = file.name;
       this.fileSize = this.docService.getSize(file);
       this.document = file;
 
@@ -165,19 +191,19 @@ export class ProductPageComponent {
   }
 
   openPdfFile(): void {
-    if (this.document || this.productData?.document) {
-      const fileURL = URL.createObjectURL(this.document ?? this.productData?.document);
+    if (this.product.document || this.productDataRoute?.document) {
+      const fileURL = URL.createObjectURL(this.product.document ?? this.productDataRoute?.document);
       window.open(fileURL, '_blank');
     }
     return
   }
 
   get fileInfo(): string | undefined {
-    return this.productData ? this.productData.document?.name : this.fileName;
+    return this.productDataRoute ? this.productDataRoute.document?.name : this.product.document?.name;
   }
 
   get disabledBtn(): boolean {
-    return this.productData ? true : false;
+    return this.productDataRoute ? true : false;
   }
 
   returnUpdatedList(data: IProductImage[]): void {

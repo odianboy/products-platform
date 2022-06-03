@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { noImage } from 'src/app/core/const/product-data.const';
-import { IProduct } from 'src/app/core/interfaces/product.interface';
+import { IProduct } from 'src/app/core/types/product.interface';
 
 @Component({
   selector: 'app-product',

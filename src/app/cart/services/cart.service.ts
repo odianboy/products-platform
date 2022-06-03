@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { cloneDeep } from 'lodash';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { IProduct } from '../../core/interfaces/product.interface';
+import { IProduct } from '../../core/types/product.interface';
 
 @Injectable({
   providedIn: 'root'

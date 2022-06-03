@@ -1,4 +1,4 @@
-import { IProduct } from "../../core/interfaces/product.interface";
+import { IProduct } from "../../core/types/product.interface";
 
 export interface IGoodsState {
     goods: IProduct[];

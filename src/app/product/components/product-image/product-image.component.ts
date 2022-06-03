@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { IProductImage } from 'src/app/core/interfaces/image.interface';
+import { IProductImage } from 'src/app/core/types/image.interface';
 
 @Component({
   selector: 'app-product-image',

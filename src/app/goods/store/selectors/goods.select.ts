@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 
-import { IAppState } from "../../../core/interfaces/app-state.interface";
+import { IAppState } from "../../../core/types/app-state.interface";
 import { IGoodsState } from "../../types/goods-state.interface";
 
 export const goodsFeatureSelector = createFeatureSelector<

@@ -17,7 +17,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { StoreModule } from '@ngrx/store';
 import { reducers } from '../goods/store/reducers/goods.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { ProductEffect } from '../goods/store/effects/goods.effect';
+import { GoodsEffect } from '../goods/store/effects/goods.effect';
 
 @NgModule({
     declarations: [GoodsComponent],
@@ -35,7 +35,7 @@ import { ProductEffect } from '../goods/store/effects/goods.effect';
         MatCheckboxModule,
         MatTooltipModule,
         StoreModule.forFeature('goods', reducers),
-        EffectsModule.forFeature([ProductEffect]),
+        EffectsModule.forFeature([GoodsEffect]),
     ],
     exports: [GoodsComponent]
 })

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, fromEvent, map, Observable, Subscriber, take, tap } from 'rxjs';
 
 import { genImage } from '../../core/const/image-data.const';
-import { IProductImage } from '../../core/interfaces/image.interface';
-import { Photo } from './photo';
+import { IProductImage } from '../../core/types/image.interface';
+import { Photo } from './photo-form';
 
 @Injectable({
     providedIn: 'root'
@@ -26,7 +26,7 @@ export class ImageQueueService {
             images.pop();
         }
 
-        images.forEach( (image, index) => image.url ? previousIndex = index + 1 : index)
+        images.forEach( (image, index) => image.url ? previousIndex = index + 1 : index);
 
         images.splice(previousIndex, 0, image);
         this._images$.next(images);

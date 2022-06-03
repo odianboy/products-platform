@@ -1,6 +1,6 @@
 import { Directive, Output, EventEmitter, HostListener } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
-import { IProductImage } from '../interfaces/image.interface';
+import { IProductImage } from '../types/image.interface';
 import { ImageQueueService } from '../../product/services/image-queue.service';
 import { ValidationService } from '../../product/services/validation.service';
 

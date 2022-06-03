@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { catchError, of, switchMap, map, withLatestFrom } from "rxjs";
-import { IProduct } from "src/app/core/interfaces/product.interface";
+import { IProduct } from "src/app/core/types/product.interface";
 import { CartService } from "../../services/cart.service";
 import {
     cartAction,
@@ -21,8 +21,8 @@ import { cartSelector } from "../selectors/cart.selector";
 export class CartEffect {
     constructor(
         private actions$: Actions,
+        private store: Store,
         private cartService: CartService,
-        private store: Store
     ) {}
 
     loadCart$ = createEffect(() => this.actions$.pipe(
@@ -36,7 +36,7 @@ export class CartEffect {
                 return of(cartFailureAction());
             })
         ))
-    ))
+    ));
 
     addProduct$ = createEffect(() => this.actions$.pipe(
         ofType(createCartAction),

@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { from, switchMap, map, catchError, of, withLatestFrom } from "rxjs";
-import { IProduct } from "../../../core/interfaces/product.interface";
+import { IProduct } from "../../../core/types/product.interface";
 import { GoodsService } from "../../services/goods.service";
 import {
     createProductAction,
@@ -21,7 +21,7 @@ import {
 import { goodsSelector } from "../selectors/goods.select";
 
 @Injectable()
-export class ProductEffect {
+export class GoodsEffect {
 
     constructor(
         private actions$: Actions,
@@ -29,7 +29,7 @@ export class ProductEffect {
         private goodsService: GoodsService
     ) {}
 
-    product$ = createEffect(() => this.actions$.pipe(
+    goods$ = createEffect(() => this.actions$.pipe(
         ofType(goodsAction),
         switchMap(() => 
             this.goodsService.goods$.pipe(
@@ -58,7 +58,7 @@ export class ProductEffect {
         ))
     );
 
-    sortProduct$ = createEffect(() => this.actions$.pipe(
+    sortGoods$ = createEffect(() => this.actions$.pipe(
         ofType(sortGoodsAction),
         withLatestFrom( this.store.select(goodsSelector) ),
         switchMap(([{sort}, goods]) => 
@@ -73,7 +73,7 @@ export class ProductEffect {
         )
     ));
 
-    filterProduct$ = createEffect(() => this.actions$.pipe(
+    filterGoods$ = createEffect(() => this.actions$.pipe(
         ofType(filterGoodsAction),
         withLatestFrom( this.store.select(goodsSelector) ),
         switchMap(([{filter}, goods]) => 

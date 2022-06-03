@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { IProduct } from "../../../core/interfaces/product.interface";
+import { IProduct } from "../../../core/types/product.interface";
 import { ActioinTypes } from '../actionTypes';
 
 export const cartAction = createAction(ActioinTypes.CART);

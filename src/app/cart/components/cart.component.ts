@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { IProduct } from 'src/app/core/interfaces/product.interface';
+import { IProduct } from 'src/app/core/types/product.interface';
 import { select, Store } from '@ngrx/store';
 import { cartSelector } from '../store/selectors/cart.selector';
 import { removeCartAction } from '../store/actions/cart.action';
@@ -19,7 +19,7 @@ export class CartComponent {
   displayedColumns = ['name', 'brand', 'price', 'action'];
 
   constructor(private router: Router, private store: Store) {
-    this.counterControl = new FormControl(1)
+    this.counterControl = new FormControl(1);
     this.cart$ = this.store.pipe( select(cartSelector) );
   }
 

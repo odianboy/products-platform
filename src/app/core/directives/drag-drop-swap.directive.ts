@@ -6,7 +6,7 @@ import {
     Input,
     Output,
   } from '@angular/core';
-import { IProductImage } from '../interfaces/image.interface';
+import { IProductImage } from '../types/image.interface';
   
   @Directive({
     selector: '[appDragDropSwap]',

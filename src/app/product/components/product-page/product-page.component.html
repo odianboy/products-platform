@@ -44,7 +44,7 @@
                 <div *ngIf="images$ | async as images">
 
                     <div class="product__image">
-                        <ng-container *ngFor="let image of (productData ? productData.images : photos); index as idx;" >
+                        <ng-container *ngFor="let image of (productDataRoute ? productDataRoute.images : photos); index as idx;" >
                             <div>
                                 <app-product-image
                                     [image]="image"

@@ -4,7 +4,7 @@ import {
     ActivatedRouteSnapshot
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { IProduct } from '../../core/interfaces/product.interface';
+import { IProduct } from '../../core/types/product.interface';
 import { GoodsService } from '../../goods/services/goods.service';
 
 

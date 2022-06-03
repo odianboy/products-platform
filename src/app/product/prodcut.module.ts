@@ -23,9 +23,9 @@ import { CoreModule } from "../core/core.module";
 import { ProductImageComponent } from "./components/product-image/product-image.component";
 
 import { StoreModule } from '@ngrx/store';
-import { reducers } from '../goods/store/reducers/goods.reducer';
+import { reducers } from "./store/reducers/product.reducer";
 import { EffectsModule } from '@ngrx/effects';
-import { ProductEffect } from '../goods/store/effects/goods.effect';
+import { ProductEffect } from "./store/effects/product.effect";
 
 @NgModule({
     declarations: [ProductComponent, ProductImageComponent, ProductPageComponent],

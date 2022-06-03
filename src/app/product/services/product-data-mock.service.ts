@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { genImage } from '../../core/const/image-data.const';
 import { brands, names, document, image } from '../../core/const/product-data.const';
-import { IProduct } from '../../core/interfaces/product.interface';
+import { IProduct } from '../../core/types/product.interface';
 
 
 @Injectable({
