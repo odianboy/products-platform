@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IProduct } from 'src/app/core/types/product.interface';
 
@@ -13,7 +13,8 @@ import { createCartAction } from 'src/app/cart/store/actions/cart.action';
 @Component({
   selector: 'app-goods',
   templateUrl: './goods.component.html',
-  styleUrls: ['./goods.component.scss']
+  styleUrls: ['./goods.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GoodsComponent {
   

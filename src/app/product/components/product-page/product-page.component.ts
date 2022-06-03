@@ -20,7 +20,7 @@ import { IProduct } from 'src/app/core/types/product.interface';
 import { IProductImage } from 'src/app/core/types/image.interface';
 import { Photo } from 'src/app/product/services/photo-form';
 
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ValidationService } from 'src/app/product/services/validation.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
@@ -75,6 +75,7 @@ export class ProductPageComponent implements OnInit{
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private store: Store,
+    private router: Router
     ) {
       this.images$ = this.ImageQueueService.images$;
       this.form = this.formGroupInit();
@@ -112,7 +113,6 @@ export class ProductPageComponent implements OnInit{
     }
 
   ngOnInit(): void {
-
     if (!this.productDataRoute) {
       this.product$.subscribe(
         value => {
@@ -122,7 +122,6 @@ export class ProductPageComponent implements OnInit{
       this.form.patchValue(this.product as IProduct);
     }
   }
-
 
   formGroupInit(): FormGroup {
     return this.fb.group({
@@ -184,6 +183,7 @@ export class ProductPageComponent implements OnInit{
 
     this.form.reset();
     this.ImageQueueService.resetImage();
+    this.router.navigate(['goods']);
   }
 
   genImageControl(): Array<FormControl> {

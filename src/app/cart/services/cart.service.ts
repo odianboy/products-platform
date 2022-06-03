@@ -17,15 +17,15 @@ export class CartService {
   }
 
   addCart(product: IProduct, actualCart: IProduct[]): Observable<IProduct[]> {
-    let cart = cloneDeep(actualCart);
+    const cart = [...actualCart];
     cart.unshift(product);
 
     return of(cart);
   }
 
   removeCart(product: IProduct, actualCart: IProduct[]): Observable<IProduct[]> {
-    let _cart = cloneDeep(actualCart);
-    let cart = _cart.filter(item => item.code !== product.code);
+    let _cart = [...actualCart];
+    const cart = _cart.filter(item => item.code !== product.code);
 
     return of(cart);
   }

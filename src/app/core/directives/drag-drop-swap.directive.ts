@@ -19,7 +19,6 @@ import { IProductImage } from '../types/image.interface';
     @Input() list: IProductImage[];
     @Output() updatedList: EventEmitter<IProductImage[]>;
 
-
     constructor() {
         this.list = [] as IProductImage[];
         this.elemPosition = 0;
@@ -39,14 +38,18 @@ import { IProductImage } from '../types/image.interface';
       let destElementIndex = this.elemPosition;
       let clonedList = [...this.list];
 
-      if (sourceElementIndex !== destElementIndex) {
+      let currentElement = clonedList[sourceElementIndex];
+      let destElement = clonedList[destElementIndex];
 
-        clonedList.splice(destElementIndex, 1, this.list[sourceElementIndex]);
-        clonedList.splice(sourceElementIndex, 1, this.list[destElementIndex]);
+      if (currentElement.name && destElement.name) {
+        if (sourceElementIndex !== destElementIndex) {
 
-        this.updatedList.emit(clonedList);
+          clonedList.splice(destElementIndex, 1, this.list[sourceElementIndex]);
+          clonedList.splice(sourceElementIndex, 1, this.list[destElementIndex]);
+  
+          this.updatedList.emit(clonedList);
+        }
       }
-
     }
   
     @HostListener('dragover', ['$event'])

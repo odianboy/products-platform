@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { cloneDeep } from 'lodash';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { IProduct } from '../../core/types/product.interface';
 import { ProductDataMockService } from '../../product/services/product-data-mock.service';
@@ -17,14 +16,14 @@ export class GoodsService {
   }
 
   getProductByCode(code: number): Observable<IProduct> {    
-    let _goods = this._goods$.getValue();
+    const _goods = this._goods$.getValue();
     let product = _goods.find( value => value.code === code );
     
-    return of( product as IProduct);
+    return of(product as IProduct);
   }
 
   createProduct(product: IProduct, actualGoods: IProduct[]): Observable<IProduct[]> {
-    let _goods = cloneDeep(actualGoods);
+    const _goods = [...actualGoods];
     _goods.unshift(product);
     this._goods$.next(_goods);
 
@@ -32,14 +31,14 @@ export class GoodsService {
   }
 
   sortGoods(sort: Boolean, actualGoods: IProduct[]): Observable<IProduct[]> {
-    const _goods = cloneDeep(actualGoods);
+    const _goods = [...actualGoods];
     _goods.sort( (a, b) => sort ? (a.price) - (b.price) : (b.price) - (a.price) );
 
     return of(_goods);
   }
 
   filterGoods(brand: Boolean, actualGoods: IProduct[]): Observable<IProduct[]> {
-    const _goods = cloneDeep(actualGoods);
+    const _goods = [...actualGoods];
 
     if(!brand) {
       let goods = _goods.filter(value => value.brand !== 'Nike');

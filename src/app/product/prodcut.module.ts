@@ -27,6 +27,12 @@ import { reducers } from "./store/reducers/product.reducer";
 import { EffectsModule } from '@ngrx/effects';
 import { ProductEffect } from "./store/effects/product.effect";
 
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+
+
+const maskConfig: Partial<IConfig> = {
+    validation: false,
+  };
 @NgModule({
     declarations: [ProductComponent, ProductImageComponent, ProductPageComponent],
     imports: [
@@ -51,6 +57,7 @@ import { ProductEffect } from "./store/effects/product.effect";
         CoreModule,
         StoreModule.forFeature('product', reducers),
         EffectsModule.forFeature([ProductEffect]),
+        NgxMaskModule.forRoot(maskConfig),
     ],
     exports: [ProductComponent, ProductImageComponent, ProductPageComponent]
 })

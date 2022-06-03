@@ -10,7 +10,7 @@ import { removeCartAction } from '../store/actions/cart.action';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.scss']
+  styleUrls: ['./cart.component.scss'],
 })
 export class CartComponent {
 

@@ -27,8 +27,6 @@ import { AppComponent } from './app.component';
 
 import { NgxDropzoneModule } from 'ngx-dropzone';
 
-import { NgxMaskModule, IConfig } from 'ngx-mask';
-
 import { HttpClientModule } from '@angular/common/http';
 import { MatSortModule } from '@angular/material/sort';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -40,10 +38,6 @@ import { CartModule } from './cart/cart.module';
 import { NavigationModule } from './navigation/navigation.module';
 import { GoodsModule } from './goods/goods.module';
 import { ProductModule } from './product/prodcut.module';
-
-const maskConfig: Partial<IConfig> = {
-  validation: false,
-};
 
 @NgModule({
   declarations: [	
@@ -66,7 +60,6 @@ const maskConfig: Partial<IConfig> = {
     MatCheckboxModule,
     NgxDropzoneModule,
     DragDropModule,
-    NgxMaskModule.forRoot(maskConfig),
     MatProgressBarModule,
     HttpClientModule,
     MatCardModule,

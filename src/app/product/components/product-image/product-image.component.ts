@@ -5,7 +5,7 @@ import { IProductImage } from 'src/app/core/types/image.interface';
 @Component({
   selector: 'app-product-image',
   templateUrl: './product-image.component.html',
-  styleUrls: ['./product-image.component.scss']
+  styleUrls: ['./product-image.component.scss'],
 })
 export class ProductImageComponent {
 
