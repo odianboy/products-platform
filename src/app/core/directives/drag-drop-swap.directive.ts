@@ -41,7 +41,7 @@ import { IProductImage } from '../types/image.interface';
       let currentElement = clonedList[sourceElementIndex];
       let destElement = clonedList[destElementIndex];
 
-      if (currentElement.name && destElement.name) {
+      if (currentElement?.name && destElement?.name) {
         if (sourceElementIndex !== destElementIndex) {
 
           clonedList.splice(destElementIndex, 1, this.list[sourceElementIndex]);
